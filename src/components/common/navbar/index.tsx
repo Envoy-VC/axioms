@@ -1,22 +1,44 @@
 import React from 'react';
-import { ConnectWallet } from '@thirdweb-dev/react';
 
-// Icons
-import { PiFingerprintBold } from 'react-icons/pi';
+import Link from 'next/link';
+
+import { Button, Input } from 'antd';
+
+import { PiFingerprintDuotone, PiSparkle } from 'react-icons/pi';
 
 const Navbar = () => {
 	return (
-		<div className='p-4 px-6'>
-			<div className='flex flex-row items-center justify-between'>
-				<div className='flex flex-row items-center gap-2'>
-					<PiFingerprintBold className='text-4xl text-blue-500' />
-					<div className='hidden text-2xl font-bold sm:flex'>W3-Starter</div>
+		<div className='border-b-[1px] border-gray-300 px-6 py-5'>
+			<div className='mx-auto flex w-full max-w-screen-3xl flex-row items-center justify-between'>
+				<div className='flex items-center gap-2'>
+					<PiFingerprintDuotone className='text-primary' size={38} />
+					<span className='text-2xl font-medium uppercase'>axioms</span>
 				</div>
-				<div className='flex flex-row items-center gap-2'>
-					<ConnectWallet
-						btnTitle='Connect'
-						className='!bg-blue-500 !p-3 !text-white'
+				<div className='hidden items-center gap-6 md:flex'>
+					<Link href='/' className='text-slate-500'>
+						Explore
+					</Link>
+					<Link href='/' className='text-slate-500'>
+						Issuance
+					</Link>
+					<Link href='/' className='text-slate-500'>
+						Dashboard
+					</Link>
+				</div>
+				<div className='flex items-center gap-3'>
+					<Input
+						placeholder='Search organizations/certifications'
+						size='middle'
+						className='hidden min-w-[20rem] !py-[6px] lg:flex'
+						prefix={<PiSparkle className='mr-2 text-lg' />}
 					/>
+					<Button
+						type='primary'
+						size='middle'
+						className='flex items-center justify-center bg-secondary px-8 py-4'
+					>
+						Connect
+					</Button>
 				</div>
 			</div>
 		</div>

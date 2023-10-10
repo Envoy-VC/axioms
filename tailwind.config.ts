@@ -5,7 +5,11 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#12A588',
+				primary: '#37D5AD',
+				secondary: '#12A588',
+			},
+			screens: {
+				'3xl': '1720px',
 			},
 		},
 	},

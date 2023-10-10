@@ -1,6 +1,5 @@
-import React from 'react';
 import { ConfigProvider, theme } from 'antd';
-
+import React from 'react';
 import { useIsMounted } from 'usehooks-ts';
 
 interface Props {
@@ -22,6 +21,9 @@ const AntDesignConfigProvider = ({ children }: Props) => {
 		<ConfigProvider
 			theme={{
 				algorithm: theme.defaultAlgorithm,
+				token: {
+					colorPrimary: '#12A588',
+				},
 			}}
 		>
 			{mounted && children}
