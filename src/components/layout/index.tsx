@@ -4,7 +4,6 @@ import {
 	AntDesignConfigProvider,
 	NotificationProvider,
 } from '~/providers';
-import { ThemeProvider } from 'next-themes';
 
 import clsx from 'clsx';
 import { Navbar, SEO } from '~/components/common';
@@ -19,19 +18,17 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
 	return (
-		<ThemeProvider attribute='class' enableSystem={false}>
-			<AntDesignConfigProvider>
-				<Web3Provider>
-					<NotificationProvider>
-						<div className={clsx(inter.className)}>
-							<SEO />
-							<Navbar />
-							{children}
-						</div>
-					</NotificationProvider>
-				</Web3Provider>
-			</AntDesignConfigProvider>
-		</ThemeProvider>
+		<AntDesignConfigProvider>
+			<Web3Provider>
+				<NotificationProvider>
+					<div className={clsx(inter.className)}>
+						<SEO />
+						<Navbar />
+						{children}
+					</div>
+				</NotificationProvider>
+			</Web3Provider>
+		</AntDesignConfigProvider>
 	);
 };
 
