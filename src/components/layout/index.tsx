@@ -9,8 +9,11 @@ import clsx from 'clsx';
 import { Navbar, SEO } from '~/components/common';
 
 // Font
+import localFont from 'next/font/local';
 import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'] });
+
+export const inter = Inter({ subsets: ['latin'] });
+export const satoshi = localFont({ src: '../../../public/fonts/Satoshi.ttf' });
 
 interface Props {
 	children: React.ReactNode;
@@ -21,7 +24,7 @@ const Layout = ({ children }: Props) => {
 		<AntDesignConfigProvider>
 			<Web3Provider>
 				<NotificationProvider>
-					<div className={clsx(inter.className)}>
+					<div className={clsx(satoshi.className)}>
 						<SEO />
 						<Navbar />
 						{children}
