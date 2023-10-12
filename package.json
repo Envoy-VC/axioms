@@ -17,6 +17,7 @@
     "@thirdweb-dev/chains": "^0.1.54",
     "@thirdweb-dev/react": "^3.16.5",
     "@thirdweb-dev/sdk": "^3.10.67",
+    "@thirdweb-dev/wallets": "^2.0.1",
     "antd": "^5.9.4",
     "clsx": "^2.0.0",
     "ethers": "^5",

@@ -15,6 +15,7 @@ const config = {
 		'^react/(.*)$',
 		'^@thirdweb-dev/(.*)$',
 		'^antd',
+		'^~/(.*)$',
 		'^react-icons/(.*)$',
 		'^[./]',
 	],

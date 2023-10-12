@@ -6,11 +6,9 @@ import {
 	coinbaseWallet,
 	trustWallet,
 	localWallet,
+	safeWallet,
 } from '@thirdweb-dev/react';
 import { Ethereum, Polygon } from '@thirdweb-dev/chains';
-
-// Metadata
-import { dAppMetadata } from 'config';
 
 import { env } from '~/env.mjs';
 
@@ -26,7 +24,6 @@ const Web3Provider = ({ children }: Props) => {
 			clientId={NEXT_PUBLIC_TW_CLIENT_ID}
 			activeChain={Ethereum}
 			supportedChains={[Ethereum, Polygon]}
-			dAppMeta={dAppMetadata}
 			supportedWallets={[
 				metamaskWallet(),
 				coinbaseWallet(),
@@ -37,6 +34,7 @@ const Web3Provider = ({ children }: Props) => {
 					projectId: NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 				}),
 				localWallet(),
+				safeWallet(),
 			]}
 		>
 			{children}
