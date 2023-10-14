@@ -24,6 +24,15 @@ const zerionWalletConfig = zerionWallet({
 	projectId: env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 });
 
+export const safeWalletConfig = safeWallet({
+	personalWallets: [
+		metamask,
+		walletConnectConfig,
+		coinbaseWalletConfig,
+		zerionWalletConfig,
+	],
+});
+
 export const personalWallets = [
 	metamask,
 	walletConnectConfig,
