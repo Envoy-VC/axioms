@@ -34,51 +34,49 @@ const PersonalWallets = () => {
 		}
 	};
 	return (
-		<div className='p-4'>
-			<div className='flex flex-col gap-2'>
-				{personalWallets.map((wallet) => (
-					<Button
-						type='text'
-						key={wallet.id}
-						className={clsx(
-							'flex h-full cursor-pointer flex-row items-center justify-between gap-4 rounded-lg p-[5px] px-2 transition-all duration-100 ease-in hover:bg-gray-100',
-							wallet.id === walletId && 'bg-gray-100'
-						)}
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						onClick={() => {
-							onClick(wallet as unknown as WalletConfig<WalletInstance>).catch(
-								(error) => console.log(error)
-							);
-						}}
-						disabled={walletId === wallet.id}
-					>
-						<div className='items-around flex h-full flex-row gap-2'>
-							<Image
-								src={wallet.meta.iconURL}
-								alt={wallet.meta.name}
-								width={42}
-								height={42}
-								className={clsx(walletId === wallet.id && 'brightness-[90%]')}
-							/>
-							<div className='flex !h-full flex-col items-start justify-start font-medium'>
-								<div className='text-[1.1rem]'>{wallet.meta.name}</div>
-								{!!wallet?.isInstalled && wallet?.isInstalled() === true && (
-									<div className='text-gray-400'>Installed</div>
-								)}
-							</div>
+		<div className='flex flex-col gap-2'>
+			{personalWallets.map((wallet) => (
+				<Button
+					type='text'
+					key={wallet.id}
+					className={clsx(
+						'flex h-full cursor-pointer flex-row items-center justify-between gap-4 rounded-lg p-[5px] px-2 transition-all duration-100 ease-in hover:bg-gray-100',
+						wallet.id === walletId && 'bg-gray-100'
+					)}
+					// eslint-disable-next-line @typescript-eslint/no-misused-promises
+					onClick={() => {
+						onClick(wallet as unknown as WalletConfig<WalletInstance>).catch(
+							(error) => console.log(error)
+						);
+					}}
+					disabled={walletId === wallet.id}
+				>
+					<div className='items-around flex h-full flex-row gap-3'>
+						<Image
+							src={wallet.meta.iconURL}
+							alt={wallet.meta.name}
+							width={40}
+							height={40}
+							className={clsx(walletId === wallet.id && 'brightness-[90%]')}
+						/>
+						<div className='flex !h-full flex-col items-start justify-start font-medium'>
+							<div className='text-[1rem]'>{wallet.meta.name}</div>
+							{!!wallet?.isInstalled && wallet?.isInstalled() === true && (
+								<div className='text-sm text-gray-400'>Installed</div>
+							)}
 						</div>
-						{connectionStatus === 'connecting' && walletId === wallet.id && (
-							<div>
-								<Spin
-									indicator={
-										<AiOutlineLoading className='animate-spin text-[1rem] text-gray-400' />
-									}
-								/>
-							</div>
-						)}
-					</Button>
-				))}
-			</div>
+					</div>
+					{connectionStatus === 'connecting' && walletId === wallet.id && (
+						<div>
+							<Spin
+								indicator={
+									<AiOutlineLoading className='animate-spin text-[1rem] text-gray-400' />
+								}
+							/>
+						</div>
+					)}
+				</Button>
+			))}
 		</div>
 	);
 };

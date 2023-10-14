@@ -61,9 +61,8 @@ const UserTypeTab = () => {
 		>
 			<Tabs
 				defaultActiveKey={userType ?? 'user'}
-				className='sm:w-full sm:max-w-sm'
+				className='sm:w-full sm:max-w-lg'
 				centered
-				indicatorSize={128}
 				size='large'
 				onChange={(userType: string) => onChange(userType)}
 				items={TabItems.map((item) => {
@@ -71,8 +70,8 @@ const UserTypeTab = () => {
 					return {
 						label: (
 							<div className='flex flex-row items-center gap-2'>
-								<Icon className='text-[1rem] sm:text-lg' />
-								<span className='font-medium sm:text-[1.1rem]'>{label}</span>
+								<Icon className='text-[1.1rem]' />
+								<span className='font-medium'>{label}</span>
 							</div>
 						),
 						key: label.toLowerCase(),
