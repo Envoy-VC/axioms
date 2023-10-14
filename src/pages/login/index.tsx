@@ -30,7 +30,7 @@ const Login: NextPageWithLayout = () => {
 
 	return (
 		<div className='mx-auto my-[4rem] max-w-screen-xl px-4'>
-			<div className='flex flex-col rounded-xl sm:shadow-md lg:flex-row'>
+			<div className='loginScreenShadow flex min-h-[75vh] flex-col rounded-xl lg:flex-row'>
 				<div className='w-full basis-1/2 sm:p-8 sm:px-16'>
 					<div className='flex flex-col gap-2'>
 						<div className='mb-8 flex flex-row justify-center gap-2'>

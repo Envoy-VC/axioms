@@ -8,8 +8,8 @@ import { PiFingerprintDuotone, PiSparkle } from 'react-icons/pi';
 
 const Navbar = () => {
 	return (
-		<div className='h-[8vh] border-b-[1px] border-gray-300 flex items-center px-8'>
-			<div className='max-w-screen-3xl mx-auto flex w-full flex-row items-center justify-between'>
+		<div className='flex h-[8vh] items-center border-b-[1px] border-gray-300 px-8'>
+			<div className='mx-auto flex w-full max-w-screen-3xl flex-row items-center justify-between'>
 				<div className='flex items-center gap-2'>
 					<PiFingerprintDuotone className='text-primary' size={38} />
 					<span className='text-2xl font-medium uppercase'>axioms</span>
@@ -36,7 +36,7 @@ const Navbar = () => {
 						<Button
 							type='primary'
 							size='middle'
-							className='bg-secondary flex items-center justify-center px-8 py-4'
+							className='flex items-center justify-center bg-secondary px-8 py-4'
 						>
 							Connect
 						</Button>
