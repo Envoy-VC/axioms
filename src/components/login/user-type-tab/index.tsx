@@ -1,12 +1,14 @@
 import React from 'react';
+import type { IconType } from 'react-icons';
+
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
+
 import { ConfigProvider, Tabs } from 'antd';
 
-import { UserLogin, OrganizationLogin } from '~/components/login';
+import { OrganizationLogin, UserLogin } from '~/components/login';
 
-import type { IconType } from 'react-icons';
-import { TbUserPentagon, TbBuilding } from 'react-icons/tb';
+import { TbBuilding, TbUserPentagon } from 'react-icons/tb';
 
 interface TabItem {
 	label: string;
@@ -59,7 +61,7 @@ const UserTypeTab = () => {
 		>
 			<Tabs
 				defaultActiveKey={userType ?? 'user'}
-				className='sm:w-full sm:max-w-xl'
+				className='sm:w-full sm:max-w-sm'
 				centered
 				indicatorSize={128}
 				size='large'

@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
-import { Layout } from '~/components';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffectOnce } from 'usehooks-ts';
 import { useRouter } from 'next/router';
 
+import { Layout } from '~/components';
 import { UserTypeTab } from '~/components/login';
 
 import type { NextPageWithLayout } from '../_app';
@@ -22,7 +22,7 @@ const Login: NextPageWithLayout = () => {
 	});
 
 	return (
-		<div className='flex h-[92vh] flex-col items-center justify-center p-24'>
+		<div className='flex flex-col items-center justify-center p-24'>
 			<UserTypeTab />
 		</div>
 	);
