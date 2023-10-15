@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Ethereum, Polygon } from '@thirdweb-dev/chains';
+import {
+	Base,
+	BaseGoerli,
+	Ethereum,
+	Goerli,
+	Polygon,
+} from '@thirdweb-dev/chains';
 import {
 	ThirdwebProvider,
 	coinbaseWallet,
@@ -51,7 +57,7 @@ const Web3Provider = ({ children }: Props) => {
 		<ThirdwebProvider
 			clientId={NEXT_PUBLIC_TW_CLIENT_ID}
 			activeChain={Ethereum}
-			supportedChains={[Ethereum, Polygon]}
+			supportedChains={[Ethereum, Polygon, Goerli, Base, BaseGoerli]}
 			supportedWallets={[
 				metamaskWallet(),
 				coinbaseWallet(),

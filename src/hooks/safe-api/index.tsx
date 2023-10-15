@@ -5,6 +5,8 @@ import { ethers } from 'ethers';
 
 import { useSigner } from '@thirdweb-dev/react';
 
+import { env } from '~/env.mjs';
+
 const SafeServices = {
 	mainnet: 'https://safe-transaction-mainnet.safe.global',
 	goerli: 'https://safe-transaction-goerli.safe.global/',
@@ -18,7 +20,9 @@ export interface SafeApiServiceConfig {
 	chain?: keyof typeof SafeServices;
 }
 
-const useSafeApiService = ({ chain = 'mainnet' }: SafeApiServiceConfig) => {
+const useSafeApiService = ({
+	chain = env.NEXT_PUBLIC_DEFAULT_CHAIN,
+}: SafeApiServiceConfig) => {
 	const signer = useSigner();
 
 	if (signer) {

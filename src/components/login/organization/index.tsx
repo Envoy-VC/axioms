@@ -21,7 +21,6 @@ const OrganizationLogin = () => {
 	const walletInstance = useWallet();
 	const { data, isLoading, error, refetch } = useGetSafesForAddress({
 		address: address!,
-		config: { chain: 'polygon' },
 	});
 
 	const [connectingSafeAddress, setConnectingSafeAddress] = React.useState<

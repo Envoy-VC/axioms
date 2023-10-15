@@ -8,6 +8,13 @@ export const env = createEnv({
 	client: {
 		NEXT_PUBLIC_TW_CLIENT_ID: z.string().min(1),
 		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: z.string().min(1),
+		NEXT_PUBLIC_DEFAULT_CHAIN: z.enum([
+			'mainnet',
+			'goerli',
+			'polygon',
+			'base',
+			'baseGoerli',
+		]),
 	},
 	/**
 	 * Runtime Environment Variables (prefixed with `NEXT_PUBLIC_`)
@@ -16,6 +23,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_TW_CLIENT_ID: process.env.NEXT_PUBLIC_TW_CLIENT_ID,
 		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
 			process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+		NEXT_PUBLIC_DEFAULT_CHAIN: process.env.NEXT_PUBLIC_DEFAULT_CHAIN,
 	},
 	/**
 	 * Skip validation of environment variables, for building without verifying the environment variables.
