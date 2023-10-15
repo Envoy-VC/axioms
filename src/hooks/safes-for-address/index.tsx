@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { env } from '~/env.mjs';
+
 import useSafeApiService from '../safe-api';
 import type { SafeApiServiceConfig } from '../safe-api';
 
@@ -10,7 +12,7 @@ interface GetSafesForAddressConfig {
 
 const useGetSafesForAddress = ({
 	address,
-	config = { chain: 'mainnet' },
+	config = { chain: env.NEXT_PUBLIC_DEFAULT_CHAIN },
 }: GetSafesForAddressConfig) => {
 	const { safeApiKit } = useSafeApiService(config);
 

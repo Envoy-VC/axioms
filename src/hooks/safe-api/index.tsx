@@ -9,10 +9,10 @@ import { env } from '~/env.mjs';
 
 const SafeServices = {
 	mainnet: 'https://safe-transaction-mainnet.safe.global',
-	goerli: 'https://safe-transaction-goerli.safe.global/',
+	goerli: 'https://safe-transaction-goerli.safe.global',
 	polygon: 'https://safe-transaction-polygon.safe.global',
 	base: 'https://safe-transaction-base.safe.global',
-	baseGoerli: 'https://safe-transaction-base-testnet.safe.global/',
+	baseGoerli: 'https://safe-transaction-base-testnet.safe.global',
 };
 
 export interface SafeApiServiceConfig {
