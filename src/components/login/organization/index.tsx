@@ -5,14 +5,11 @@ import { Polygon } from '@thirdweb-dev/chains';
 import { useAddress } from '@thirdweb-dev/react';
 import { useConnect, useWallet } from '@thirdweb-dev/react';
 
-import { Avatar, Button } from 'antd';
-
 import { Spinner } from '~/components/common';
 import { useGetSafesForAddress } from '~/hooks';
 import { safeWalletConfig } from '~/providers/web3';
 
-import { TbDotsVertical } from 'react-icons/tb';
-
+import { AccountPill, SafeWalletPill } from '../account-pill';
 import PersonalWallets from '../personal-wallets';
 
 const OrganizationLogin = () => {
@@ -76,40 +73,12 @@ const OrganizationLogin = () => {
 							Available Organizations
 						</div>
 						{data.map((safe, index) => (
-							<div key={index} className='flex flex-row items-center gap-2'>
-								<Button
-									size='large'
-									type='text'
-									key={index}
-									className={clsx(
-										'flex w-full flex-row items-center justify-between gap-3 rounded-lg !border-[1px] !px-2 !py-7',
-										connectingSafeAddress === safe && 'bg-gray-100'
-									)}
-									disabled={connectingSafeAddress === safe}
-									// eslint-disable-next-line @typescript-eslint/no-misused-promises
-									onClick={() => connectSafe(safe)}
-								>
-									<div className='flex flex-row justify-start gap-3'>
-										<Avatar
-											alt='Safe Icon'
-											src={`https://api.dicebear.com/7.x/shapes/svg?seed=${safe}`}
-											size={46}
-										/>
-										<div className='flex flex-col items-start text-[1rem]'>
-											<div className='font-medium text-slate-600'>Untitled</div>
-											<div className='text-sm font-medium text-gray-500'>
-												{safe.slice(0, 8) + '...' + safe.slice(-8)}
-											</div>
-										</div>
-									</div>
-									{connectingSafeAddress === safe && <Spinner color='-gray-400' />}
-								</Button>
-								<Button
-									icon={<TbDotsVertical size={18} />}
-									type='text'
-									disabled={connectingSafeAddress === safe}
-								/>
-							</div>
+							<SafeWalletPill
+								key={index}
+								safeAddress={safe}
+								connectingSafeAddress={connectingSafeAddress}
+								connectSafe={connectSafe}
+							/>
 						))}
 					</div>
 				)}
@@ -127,73 +96,7 @@ const OrganizationLogin = () => {
 				<div className='my-2 px-3 text-[1rem] font-medium text-slate-700'>
 					Connected to
 				</div>
-				<div className='flex flex-row items-center gap-2 mb-4'>
-					<div
-						className={clsx(
-							'flex w-full flex-row items-center justify-between gap-3 rounded-lg !px-2 !py-2'
-						)}
-					>
-						<div className='flex flex-row justify-start gap-3'>
-							<Avatar
-								alt='Safe Icon'
-								src={`https://api.dicebear.com/7.x/shapes/svg?seed=${address}`}
-								size={46}
-							/>
-							<div className='flex flex-col items-start text-[1rem]'>
-								<div className='font-medium text-slate-600'>Untitled</div>
-								<div className='text-sm font-medium text-gray-500'>
-									{address!.slice(0, 8) + '...' + address!.slice(-8)}
-								</div>
-							</div>
-						</div>
-					</div>
-					<Button
-						icon={<TbDotsVertical size={18} />}
-						type='text'
-						disabled={connectingSafeAddress === address!}
-					/>
-				</div>
-				<div className='flex flex-col gap-2'>
-					<div className='my-2 px-3 text-[1rem] font-medium text-slate-700'>
-						Available Organizations
-					</div>
-					{data.map((safe, index) => (
-						<div key={index} className='flex flex-row items-center gap-2'>
-							<Button
-								size='large'
-								type='text'
-								key={index}
-								className={clsx(
-									'flex w-full flex-row items-center justify-between gap-3 rounded-lg !border-[1px] !px-2 !py-7',
-									connectingSafeAddress === safe && 'bg-gray-100'
-								)}
-								disabled={connectingSafeAddress === safe}
-								// eslint-disable-next-line @typescript-eslint/no-misused-promises
-								onClick={() => connectSafe(safe)}
-							>
-								<div className='flex flex-row justify-start gap-3'>
-									<Avatar
-										alt='Safe Icon'
-										src={`https://api.dicebear.com/7.x/shapes/svg?seed=${safe}`}
-										size={46}
-									/>
-									<div className='flex flex-col items-start text-[1rem]'>
-										<div className='font-medium text-slate-600'>Untitled</div>
-										<div className='text-sm font-medium text-gray-500'>
-											{safe.slice(0, 8) + '...' + safe.slice(-8)}
-										</div>
-									</div>
-								</div>
-								{connectingSafeAddress === safe && <Spinner color='-gray-400' />}
-							</Button>
-							<Button
-								icon={<TbDotsVertical size={18} />}
-								type='text'
-								disabled={connectingSafeAddress === safe}
-							/>
-						</div>
-					))}
-				</div>
+				<AccountPill address={address!} />
 			</div>
 		);
 	}

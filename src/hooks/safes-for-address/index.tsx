@@ -37,7 +37,7 @@ const useGetSafesForAddress = ({
 			}
 		};
 		void getSafesForOwner();
-	}, []);
+	}, [address]);
 
 	return { data, isLoading, error };
 };
