@@ -2,9 +2,11 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { Button, Input } from 'antd';
+import { Input } from 'antd';
 
 import { PiFingerprintDuotone, PiSparkle } from 'react-icons/pi';
+
+import ConnectButton from '../connect-button';
 
 const Navbar = () => {
 	return (
@@ -32,15 +34,7 @@ const Navbar = () => {
 						className='hidden min-w-[20rem] !py-[6px] lg:flex'
 						prefix={<PiSparkle className='mr-2 text-lg' />}
 					/>
-					<Link href='/login'>
-						<Button
-							type='primary'
-							size='middle'
-							className='flex items-center justify-center bg-secondary px-8 py-4'
-						>
-							Connect
-						</Button>
-					</Link>
+					<ConnectButton />
 				</div>
 			</div>
 		</div>
