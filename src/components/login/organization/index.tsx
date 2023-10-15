@@ -1,13 +1,16 @@
-import clsx from 'clsx';
 import React from 'react';
 
 import { Polygon } from '@thirdweb-dev/chains';
 import { useAddress } from '@thirdweb-dev/react';
 import { useConnect, useWallet } from '@thirdweb-dev/react';
 
+import { Button } from 'antd';
+
 import { Spinner } from '~/components/common';
 import { useGetSafesForAddress } from '~/hooks';
 import { safeWalletConfig } from '~/providers/web3';
+
+import { TbRefresh } from 'react-icons/tb';
 
 import { AccountPill, SafeWalletPill } from '../account-pill';
 import PersonalWallets from '../personal-wallets';
@@ -16,7 +19,7 @@ const OrganizationLogin = () => {
 	const connect = useConnect();
 	const address = useAddress();
 	const walletInstance = useWallet();
-	const { data, isLoading, error } = useGetSafesForAddress({
+	const { data, isLoading, error, refetch } = useGetSafesForAddress({
 		address: address!,
 		config: { chain: 'polygon' },
 	});
@@ -63,8 +66,16 @@ const OrganizationLogin = () => {
 					</div>
 				)}
 				{error && (
-					<div className='my-2 px-3 text-[1rem] font-medium text-slate-700'>
+					<div className='my-2 flex flex-row items-center gap-2 px-3 text-[1rem] font-medium text-slate-700'>
 						Something went wrong.
+						<Button
+							type='primary'
+							size='small'
+							icon={<TbRefresh size={16} className='' />}
+							className='flex items-center justify-center bg-secondary'
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onClick={refetch}
+						/>
 					</div>
 				)}
 				{!isLoading && !error && data.length > 0 && (
