@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { env } from '~/env.mjs';
+import { getSafeApiServiceChain } from '~/helpers/network';
 
 import useSafeApiService from '../safe-api';
 import type { SafeApiServiceConfig } from '../safe-api';
@@ -12,7 +12,7 @@ interface GetSafesForAddressConfig {
 
 const useGetSafesForAddress = ({
 	address,
-	config = { chain: env.NEXT_PUBLIC_DEFAULT_CHAIN },
+	config = { chain: getSafeApiServiceChain() },
 }: GetSafesForAddressConfig) => {
 	const { safeApiKit } = useSafeApiService(config);
 

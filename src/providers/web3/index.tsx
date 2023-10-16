@@ -17,6 +17,7 @@ import {
 } from '@thirdweb-dev/react';
 
 import { env } from '~/env.mjs';
+import { getDefaultChain } from '~/helpers/network';
 
 // Wallets
 const metamask = metamaskWallet();
@@ -44,35 +45,17 @@ export const personalWallets = [
 	zerionWalletConfig,
 ];
 
-const { NEXT_PUBLIC_TW_CLIENT_ID, NEXT_PUBLIC_DEFAULT_CHAIN } = env;
+const { NEXT_PUBLIC_TW_CLIENT_ID } = env;
 
 interface Props {
 	children: React.ReactNode;
 }
 
-export const getActiveChain = () => {
-	const defaultChain = NEXT_PUBLIC_DEFAULT_CHAIN;
-	switch (defaultChain) {
-		case 'mainnet':
-			return Ethereum;
-		case 'polygon':
-			return Polygon;
-		case 'goerli':
-			return Goerli;
-		case 'base':
-			return Base;
-		case 'baseGoerli':
-			return BaseGoerli;
-		default:
-			return Ethereum;
-	}
-};
-
 const Web3Provider = ({ children }: Props) => {
 	return (
 		<ThirdwebProvider
 			clientId={NEXT_PUBLIC_TW_CLIENT_ID}
-			activeChain={getActiveChain()}
+			activeChain={getDefaultChain()}
 			supportedChains={[Ethereum, Polygon, Goerli, Base, BaseGoerli]}
 		>
 			{children}

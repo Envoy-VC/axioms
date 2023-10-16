@@ -1,20 +1,14 @@
 import React from 'react';
 
-import { Polygon } from '@thirdweb-dev/chains';
 import { useAddress } from '@thirdweb-dev/react';
-import {
-	useChain,
-	useConnect,
-	useSwitchChain,
-	useWallet,
-} from '@thirdweb-dev/react';
+import { useConnect, useWallet } from '@thirdweb-dev/react';
 
 import { Button } from 'antd';
 
 import { Spinner } from '~/components/common';
+import { getDefaultChain } from '~/helpers/network';
 import { useGetSafesForAddress } from '~/hooks';
 import { safeWalletConfig } from '~/providers/web3';
-import { getActiveChain } from '~/providers/web3';
 
 import { TbRefresh } from 'react-icons/tb';
 
@@ -22,8 +16,6 @@ import { AccountPill, SafeWalletPill } from '../account-pill';
 import PersonalWallets from '../personal-wallets';
 
 const OrganizationLogin = () => {
-	const chain = useChain();
-	const switchChain = useSwitchChain();
 	const connect = useConnect();
 	const address = useAddress();
 	const walletInstance = useWallet();
@@ -37,13 +29,9 @@ const OrganizationLogin = () => {
 
 	const connectSafe = async (safeAddress: string) => {
 		try {
-			const activeChain = getActiveChain();
-			if (chain !== activeChain) {
-				await switchChain(activeChain.chainId);
-			}
 			setConnectingSafeAddress(safeAddress);
 			const res = await connect(safeWalletConfig, {
-				chain: getActiveChain(),
+				chain: getDefaultChain(),
 				safeAddress,
 				personalWallet: walletInstance!,
 			});

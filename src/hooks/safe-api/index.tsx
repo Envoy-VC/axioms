@@ -5,14 +5,11 @@ import { ethers } from 'ethers';
 
 import { useSigner } from '@thirdweb-dev/react';
 
-import { env } from '~/env.mjs';
+import { getSafeApiServiceChain } from '~/helpers/network';
 
 const SafeServices = {
-	mainnet: 'https://safe-transaction-mainnet.safe.global',
 	goerli: 'https://safe-transaction-goerli.safe.global',
 	polygon: 'https://safe-transaction-polygon.safe.global',
-	base: 'https://safe-transaction-base.safe.global',
-	baseGoerli: 'https://safe-transaction-base-testnet.safe.global',
 };
 
 export interface SafeApiServiceConfig {
@@ -20,9 +17,14 @@ export interface SafeApiServiceConfig {
 	chain?: keyof typeof SafeServices;
 }
 
+interface SafeApiServiceResult {
+	safeApiKit: SafeApiKit | null;
+	error: string | null;
+}
+
 const useSafeApiService = ({
-	chain = env.NEXT_PUBLIC_DEFAULT_CHAIN,
-}: SafeApiServiceConfig) => {
+	chain = getSafeApiServiceChain(),
+}: SafeApiServiceConfig): SafeApiServiceResult => {
 	const signer = useSigner();
 
 	if (signer) {
@@ -35,9 +37,9 @@ const useSafeApiService = ({
 			txServiceUrl: SafeServices[chain],
 			ethAdapter,
 		});
-		return { safeApiKit };
+		return { safeApiKit, error: null };
 	} else {
-		return { error: 'Signer not defined' };
+		return { safeApiKit: null, error: 'Signer not defined' };
 	}
 };
 

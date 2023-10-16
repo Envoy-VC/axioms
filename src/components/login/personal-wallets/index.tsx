@@ -9,6 +9,7 @@ import type { WalletConfig, WalletInstance } from '@thirdweb-dev/react';
 
 import { Button, Spin } from 'antd';
 
+import { getDefaultChain } from '~/helpers/network';
 import { personalWallets } from '~/providers/web3';
 // Stores
 import { useConnectingWallet } from '~/stores';
@@ -25,7 +26,7 @@ const PersonalWallets = () => {
 		try {
 			setWalletId(wallet.id);
 			await connect(wallet, {
-				chainId: Polygon.chainId,
+				chainId: getDefaultChain().chainId,
 			});
 		} catch (error) {
 			console.log(error);
