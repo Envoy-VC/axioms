@@ -11,7 +11,7 @@ import { Image } from 'antd';
 import { Layout } from '~/components';
 import { inter } from '~/components/layout';
 import { UserTypeTab } from '~/components/login';
-
+	
 import { PiFingerprintDuotone } from 'react-icons/pi';
 
 import type { NextPageWithLayout } from '../_app';
@@ -62,7 +62,7 @@ const Login: NextPageWithLayout = () => {
 						</div>
 						<div className='my-4 flex flex-row items-center justify-center gap-2 font-medium'>
 							<div>New to Axioms?</div>
-							<Link className='text-primary' href='/org/create'>
+							<Link className='text-primary' href='/organization/create'>
 								Create new organization
 							</Link>
 						</div>
