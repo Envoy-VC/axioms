@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { Button, Input, Modal } from 'antd';
 
 import { useEditNameModal } from '~/stores';
-import type { SafeAccount } from '~/types';
+import type { Account } from '~/types';
 
 interface Props {
 	safeAddress: string;
@@ -13,7 +13,7 @@ interface Props {
 const EditNameModal = ({ safeAddress }: Props) => {
 	const { isOpen, close } = useEditNameModal();
 	const [name, setName] = React.useState<string>('');
-	const [safeAccounts, setSafeAccounts] = useLocalStorage<SafeAccount[]>(
+	const [safeAccounts, setSafeAccounts] = useLocalStorage<Account[]>(
 		'safeAccounts',
 		[]
 	);
@@ -21,7 +21,7 @@ const EditNameModal = ({ safeAddress }: Props) => {
 	const onSave = () => {
 		try {
 			const safeAccount = safeAccounts.find(
-				(account: SafeAccount) => account.address === safeAddress
+				(account: Account) => account.address === safeAddress
 			);
 			if (safeAccount) {
 				safeAccount.name = name;

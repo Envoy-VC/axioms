@@ -7,7 +7,7 @@ import { useDisconnect } from '@thirdweb-dev/react';
 import { Avatar, Button } from 'antd';
 
 import { Spinner } from '~/components/common';
-import type { SafeAccount } from '~/types';
+import type { Account } from '~/types';
 
 import { TbLogout } from 'react-icons/tb';
 
@@ -27,7 +27,7 @@ export const SafeWalletPill = ({
 }: SafeWalletPillProps) => {
 	const safeAccounts = useReadLocalStorage('safeAccounts');
 	const safeAccountName =
-		((safeAccounts ?? []) as SafeAccount[])?.find(
+		((safeAccounts ?? []) as Account[])?.find(
 			(account) => account.address === safeAddress
 		)?.name ?? 'Untitled';
 
@@ -60,7 +60,7 @@ export const SafeWalletPill = ({
 					</div>
 					{connectingSafeAddress === safeAddress && <Spinner color='gray-400' />}
 				</Button>
-				<EditAccountButton safeAddress={safeAddress} />
+				<EditAccountButton address={safeAddress} />
 			</div>
 			<EditNameModal safeAddress={safeAddress} />
 		</>
@@ -75,7 +75,7 @@ export const AccountPill = ({ address }: AccountPillProps) => {
 	const disconnect = useDisconnect();
 	const safeAccounts = useReadLocalStorage('safeAccounts');
 	const safeAccountName =
-		((safeAccounts ?? []) as SafeAccount[])?.find(
+		((safeAccounts ?? []) as Account[])?.find(
 			(account) => account.address === address
 		)?.name ?? 'Untitled';
 	return (
@@ -106,7 +106,7 @@ export const AccountPill = ({ address }: AccountPillProps) => {
 						onClick={disconnect}
 					/>
 
-					<EditAccountButton safeAddress={address} />
+					<EditAccountButton address={address} />
 				</div>
 			</div>
 			<EditNameModal safeAddress={address} />

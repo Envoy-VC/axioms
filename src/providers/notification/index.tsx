@@ -1,8 +1,6 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import clsx from 'clsx';
-
 interface Props {
 	children: React.ReactNode;
 }

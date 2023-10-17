@@ -1,4 +1,4 @@
-export interface SafeAccount {
+export interface Account {
 	address: string;
 	name?: string;
 }

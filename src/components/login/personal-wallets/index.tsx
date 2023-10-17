@@ -3,7 +3,6 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { Polygon } from '@thirdweb-dev/chains';
 import { useConnect, useConnectionStatus } from '@thirdweb-dev/react';
 import type { WalletConfig, WalletInstance } from '@thirdweb-dev/react';
 
