@@ -1,6 +1,6 @@
 import SafeApiKit from '@safe-global/api-kit';
 import { EthersAdapter } from '@safe-global/protocol-kit';
-import { type EthAdapter } from '@safe-global/safe-core-sdk-types';
+import type { EthAdapter } from '@safe-global/safe-core-sdk-types';
 import { ethers } from 'ethers';
 
 import { useSigner } from '@thirdweb-dev/react';
@@ -19,6 +19,7 @@ export interface SafeApiServiceConfig {
 
 interface SafeApiServiceResult {
 	safeApiKit: SafeApiKit | null;
+	ethAdapter: EthAdapter | null;
 	error: string | null;
 }
 
@@ -37,9 +38,9 @@ const useSafeApiService = ({
 			txServiceUrl: SafeServices[chain],
 			ethAdapter,
 		});
-		return { safeApiKit, error: null };
+		return { safeApiKit, ethAdapter, error: null };
 	} else {
-		return { safeApiKit: null, error: 'Signer not defined' };
+		return { safeApiKit: null, ethAdapter: null, error: 'Signer not defined' };
 	}
 };
 
