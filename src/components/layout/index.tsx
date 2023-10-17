@@ -1,16 +1,16 @@
-import React from 'react';
-import {
-	Web3Provider,
-	AntDesignConfigProvider,
-	NotificationProvider,
-} from '~/providers';
-
 import clsx from 'clsx';
-import { Navbar, SEO } from '~/components/common';
+import React from 'react';
 
+import { Inter } from 'next/font/google';
 // Font
 import localFont from 'next/font/local';
-import { Inter } from 'next/font/google';
+
+import { Navbar, SEO } from '~/components/common';
+import {
+	AntDesignConfigProvider,
+	NotificationProvider,
+	Web3Provider,
+} from '~/providers';
 
 export const inter = Inter({ subsets: ['latin'] });
 export const satoshi = localFont({ src: '../../../public/fonts/Satoshi.ttf' });
@@ -24,7 +24,7 @@ const Layout = ({ children }: Props) => {
 		<AntDesignConfigProvider>
 			<Web3Provider>
 				<NotificationProvider>
-					<div className={clsx(satoshi.className)}>
+					<div className={clsx(satoshi.className, 'min-h-full')}>
 						<SEO />
 						<Navbar />
 						{children}
