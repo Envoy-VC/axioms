@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Button, Popconfirm } from 'antd';
 
-import { Spinner } from '~/components/common';
 import { useCreateSafe } from '~/hooks';
 import { useCreateSafeStore } from '~/stores';
 
@@ -11,19 +10,27 @@ import { TbCircle4Filled } from 'react-icons/tb';
 import OwnerPill from '../owner-details/owner-pill';
 
 const OwnerDetailsStep = () => {
-	const { name, owners, threshold, setCurrentStep, resetForm } =
+	const { name, owners, threshold, setCurrentStep, setSafeAddress } =
 		useCreateSafeStore();
-	const { mutateAsync, isLoading, error } = useCreateSafe();
+	const { mutateAsync, isLoading } = useCreateSafe();
 	const onBack = () => {
 		setCurrentStep(2);
 	};
 	const confirm = async (_e: React.MouseEvent<HTMLElement> | undefined) => {
-		await mutateAsync({ owners: owners, threshold: threshold }).catch((error) => {
+		try {
+			const safeAddress = await mutateAsync({
+				owners: owners,
+				threshold: threshold,
+			});
+			if (safeAddress instanceof Error) {
+				throw safeAddress;
+			} else {
+				setSafeAddress(safeAddress);
+				setCurrentStep(4);
+			}
+		} catch (error) {
 			console.log(error);
-		});
-		if (error) return;
-		resetForm();
-		setCurrentStep(0);
+		}
 	};
 
 	const cancel = (e: React.MouseEvent<HTMLElement> | undefined) => {
@@ -74,7 +81,7 @@ const OwnerDetailsStep = () => {
 						size='large'
 						disabled={isLoading}
 					>
-						{isLoading ? <Spinner color='white' size='default' /> : 'Create'}
+						Create
 					</Button>
 				</Popconfirm>
 			</div>

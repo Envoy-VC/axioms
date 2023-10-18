@@ -9,6 +9,7 @@ import {
 	ConnectFormSteps,
 	OwnerDetailsStep,
 	ReviewStep,
+	SuccessStep,
 } from '../form-steps';
 
 const CreateOrganizationForm = () => {
@@ -30,6 +31,8 @@ const CreateOrganizationForm = () => {
 			return <OwnerDetailsStep />;
 		case 3:
 			return <ReviewStep />;
+		case 4:
+			return <SuccessStep />;
 	}
 };
 
