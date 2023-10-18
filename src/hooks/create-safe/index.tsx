@@ -25,7 +25,10 @@ const useCreateSafe = () => {
 				ethAdapter: ethAdapter as any,
 			});
 			const safeAccountConfig = { owners, threshold, ...props };
-			const safe = await safeFactory.deploySafe({ safeAccountConfig });
+			const safe = await safeFactory.deploySafe({
+				safeAccountConfig,
+				options: { gasLimit: 10**6 },
+			});
 			const safeAddress = await safe.getAddress();
 			return safeAddress;
 		} catch (error) {

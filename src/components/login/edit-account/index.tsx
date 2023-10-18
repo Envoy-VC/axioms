@@ -1,21 +1,15 @@
 import React from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
-
-
 import { Dropdown } from 'antd';
 import { Button } from 'antd';
 import type { MenuProps } from 'antd';
 
-
-
+import { useLocalAccountDetails } from '~/hooks';
 import { useEditNameModal } from '~/stores';
 import type { Account } from '~/types';
 
-
-
 import { TbDotsVertical, TbEdit, TbTrash } from 'react-icons/tb';
-
 
 interface DropdownItem {
 	label: React.ReactNode;
@@ -29,21 +23,8 @@ interface Props {
 
 const EditAccountButton = ({ address }: Props) => {
 	const { open } = useEditNameModal();
-	const [safeAccounts, setSafeAccounts] = useLocalStorage<Account[]>(
-		'safeAccounts',
-		[]
-	);
+	const { remove } = useLocalAccountDetails({ address: address });
 
-	const onRemove = () => {
-		try {
-			const newSafeAccounts = safeAccounts.filter(
-				(account: Account) => account.address !== address
-			);
-			setSafeAccounts([...newSafeAccounts]);
-		} catch (error) {
-			console.log(error);
-		}
-	};
 	const dropDownItems: DropdownItem[] = [
 		{
 			label: 'Edit',
@@ -53,7 +34,7 @@ const EditAccountButton = ({ address }: Props) => {
 		{
 			label: 'Remove',
 			Icon: <TbTrash size={16} className='text-red-600' />,
-			handleClick: () => onRemove(),
+			handleClick: () => remove({ address: address }),
 		},
 	];
 	const items: MenuProps['items'] = [

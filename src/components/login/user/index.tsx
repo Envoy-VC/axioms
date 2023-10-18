@@ -14,7 +14,7 @@ const UserLogin = () => {
 				<PersonalWallets />
 			</div>
 		);
-	} else {
+	} else if (walletInstance.walletId !== 'safe') {
 		return (
 			<div>
 				<div className='my-2 px-3 text-[1rem] font-medium text-slate-700'>

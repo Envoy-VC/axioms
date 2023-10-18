@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Popconfirm } from 'antd';
 
 import { useCreateSafe } from '~/hooks';
+import { useLocalAccountDetails } from '~/hooks';
 import { useCreateSafeStore } from '~/stores';
 
 import { TbCircle4Filled } from 'react-icons/tb';
@@ -12,6 +13,7 @@ import OwnerPill from '../owner-details/owner-pill';
 const OwnerDetailsStep = () => {
 	const { name, owners, threshold, setCurrentStep, setSafeAddress } =
 		useCreateSafeStore();
+	const { save } = useLocalAccountDetails({});
 	const { mutateAsync, isLoading } = useCreateSafe();
 	const onBack = () => {
 		setCurrentStep(2);
@@ -26,6 +28,7 @@ const OwnerDetailsStep = () => {
 				throw safeAddress;
 			} else {
 				setSafeAddress(safeAddress);
+				save({ name, address: safeAddress });
 				setCurrentStep(4);
 			}
 		} catch (error) {

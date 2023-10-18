@@ -57,6 +57,7 @@ const Web3Provider = ({ children }: Props) => {
 			clientId={NEXT_PUBLIC_TW_CLIENT_ID}
 			activeChain={getDefaultChain()}
 			supportedChains={[Ethereum, Polygon, Goerli, Base, BaseGoerli]}
+			autoConnect={false}
 		>
 			{children}
 		</ThirdwebProvider>

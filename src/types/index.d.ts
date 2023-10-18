@@ -1,4 +1,4 @@
 export interface Account {
-	address: string;
 	name?: string;
+	address: string;
 }

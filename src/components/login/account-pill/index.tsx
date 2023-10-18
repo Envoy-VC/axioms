@@ -1,13 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
-import { useReadLocalStorage } from 'usehooks-ts';
 
 import { useDisconnect } from '@thirdweb-dev/react';
 
 import { Avatar, Button } from 'antd';
 
 import { Spinner } from '~/components/common';
-import type { Account } from '~/types';
+import { useLocalAccountDetails } from '~/hooks';
 
 import { TbLogout } from 'react-icons/tb';
 
@@ -25,11 +24,7 @@ export const SafeWalletPill = ({
 	connectingSafeAddress,
 	connectSafe,
 }: SafeWalletPillProps) => {
-	const safeAccounts = useReadLocalStorage('safeAccounts');
-	const safeAccountName =
-		((safeAccounts ?? []) as Account[])?.find(
-			(account) => account.address === safeAddress
-		)?.name ?? 'Untitled';
+	const { data } = useLocalAccountDetails({ address: safeAddress });
 
 	return (
 		<>
@@ -52,7 +47,9 @@ export const SafeWalletPill = ({
 							size={46}
 						/>
 						<div className='flex flex-col items-start text-[1rem]'>
-							<div className='font-medium text-slate-600'>{safeAccountName}</div>
+							<div className='font-medium text-slate-600'>
+								{data?.name ?? 'Untitled'}
+							</div>
 							<div className='text-sm font-medium text-gray-500'>
 								{safeAddress.slice(0, 8) + '...' + safeAddress.slice(-8)}
 							</div>
@@ -62,7 +59,7 @@ export const SafeWalletPill = ({
 				</Button>
 				<EditAccountButton address={safeAddress} />
 			</div>
-			<EditNameModal safeAddress={safeAddress} />
+			<EditNameModal address={safeAddress} />
 		</>
 	);
 };
@@ -73,11 +70,8 @@ interface AccountPillProps {
 
 export const AccountPill = ({ address }: AccountPillProps) => {
 	const disconnect = useDisconnect();
-	const safeAccounts = useReadLocalStorage('safeAccounts');
-	const safeAccountName =
-		((safeAccounts ?? []) as Account[])?.find(
-			(account) => account.address === address
-		)?.name ?? 'Untitled';
+	const { data } = useLocalAccountDetails({ address: address });
+
 	return (
 		<>
 			<div
@@ -92,7 +86,9 @@ export const AccountPill = ({ address }: AccountPillProps) => {
 						size={46}
 					/>
 					<div className='flex flex-col items-start text-[1rem]'>
-						<div className='font-medium text-slate-600'>{safeAccountName}</div>
+						<div className='font-medium text-slate-600'>
+							{data?.name ?? 'Untitled'}
+						</div>
 						<div className='text-sm font-medium text-gray-500'>
 							{address?.slice(0, 8) + '...' + address?.slice(-8)}
 						</div>
@@ -105,11 +101,10 @@ export const AccountPill = ({ address }: AccountPillProps) => {
 						// eslint-disable-next-line @typescript-eslint/no-misused-promises
 						onClick={disconnect}
 					/>
-
 					<EditAccountButton address={address} />
 				</div>
 			</div>
-			<EditNameModal safeAddress={address} />
+			<EditNameModal address={address} />
 		</>
 	);
 };

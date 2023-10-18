@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 import type { IconType } from 'react-icons';
 
+import { useRouter } from 'next/router';
+
 import { useAddress, useDisconnect, useWallet } from '@thirdweb-dev/react';
 
 import { Button, Divider, Dropdown } from 'antd';
@@ -10,6 +12,7 @@ import type { MenuProps } from 'antd';
 import { inter } from '~/components/layout';
 
 import {
+	TbArrowsExchange,
 	TbBuilding,
 	TbCertificate,
 	TbClipboardCopy,
@@ -70,10 +73,17 @@ const DropDownItem = ({ name, Icon, handleClick }: DropdownItemProps) => {
 };
 
 const UserDropdown = ({ children }: Props) => {
+	const router = useRouter();
 	const address = useAddress();
 	const disconnect = useDisconnect();
 	const [open, setOpen] = React.useState<boolean>(false);
-	const dropdownItems: DropdownItemProps[] = [];
+	const dropdownItems: DropdownItemProps[] = [
+		{
+			name: 'Switch Account',
+			Icon: TbArrowsExchange,
+			handleClick: () => router.push('/login'),
+		},
+	];
 	const items: MenuProps['items'] = [
 		{
 			key: '1',
@@ -97,7 +107,7 @@ const UserDropdown = ({ children }: Props) => {
 		},
 		...ProfileInstance().map((item) => item),
 		...dropdownItems.map((item, index) => ({
-			key: `${index + 3}`,
+			key: `${index + 4}`,
 			label: <DropDownItem {...item} />,
 		})),
 		{
