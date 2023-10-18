@@ -13,8 +13,10 @@ import { TbCircle1Filled } from 'react-icons/tb';
 const ConnectWalletStep = () => {
 	const walletInstance = useWallet();
 	const address = useAddress();
-	const { setCurrentStep } = useCreateSafeStore();
+	const { setCurrentStep, setOwners } = useCreateSafeStore();
 	const onNext = () => {
+		if (!address) return;
+		setOwners([address]);
 		setCurrentStep(1);
 	};
 
