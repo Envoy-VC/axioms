@@ -44,7 +44,7 @@ const OwnerDetailsStep = () => {
 				<div className='flex flex-col'>
 					<div className='mb-2 text-lg font-medium text-slate-700'>Owners</div>
 					{owners.map((owner, index) => (
-						<OwnerPill address={owner} key={index} />
+						<OwnerPill address={owner} key={index} showDeleteButton={false} />
 					))}
 				</div>
 				<div className='text-lg font-medium text-slate-700'>
