@@ -23,6 +23,15 @@ const UserLogin = () => {
 				<AccountPill address={address!} />
 			</div>
 		);
+	} else {
+		return (
+			<div>
+				<div className='my-2 px-3 text-[1rem] font-medium text-slate-700'>
+					Connected to Organization Account
+				</div>
+				<AccountPill address={address!} />
+			</div>
+		);
 	}
 };
 
