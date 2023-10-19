@@ -12,21 +12,22 @@ export interface BasicDetailsState {
 	eventDescription: string;
 	eventType: 'online' | 'offline';
 }
-type POAPHolder = {
+
+export type POAPHolder = {
 	address: string;
 } & Record<string, string>;
 
-interface POAPCertificateState {
+export interface POAPCertificateState {
 	certificate: File;
 	holders: POAPHolder[];
 }
 
-type BasicCertificateHolder = {
+export type BasicCertificateHolder = {
 	address: string;
 	certificate: File;
 } & Record<string, string>;
 
-interface BasicCertificateState {
+export interface BasicCertificateState {
 	holders: BasicCertificateHolder[];
 }
 
