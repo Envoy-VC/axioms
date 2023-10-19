@@ -1,9 +1,6 @@
 import { create } from 'zustand';
 
-
-
 import { UploadFile } from 'antd';
-
 
 interface CounterState {
 	currentStep: number;
@@ -19,7 +16,7 @@ export interface BasicDetailsState {
 }
 
 export type POAPHolder = {
-	address: string;
+	address?: string;
 } & Record<string, string>;
 
 export interface POAPCertificateState {

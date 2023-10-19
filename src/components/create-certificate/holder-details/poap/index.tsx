@@ -14,6 +14,7 @@ import type {
 
 import { TbCertificate } from 'react-icons/tb';
 
+import AddPOAPHolder from '../../add-poap-holder';
 import FormFooter from '../../form-footer';
 import PageLayout from '../../layout';
 import POAPHolderPill from './holder-pill';
@@ -84,7 +85,7 @@ const POAPHolderDetails = () => {
 			setCsvFiles(newFileList);
 		},
 		beforeUpload: (file) => {
-			setHolders([]);
+			// setHolders([]);
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			Papa.parse(file as File, {
 				worker: true,
@@ -117,7 +118,7 @@ const POAPHolderDetails = () => {
 
 	const onNext = () => {
 		setCertificateHolders({
-			certificate: fileList[0] as RcFile,
+			certificate: fileList[0],
 			holders: holders,
 		});
 		nextStep();
@@ -154,9 +155,7 @@ const POAPHolderDetails = () => {
 							<Button className='w-full'>Upload CSV File</Button>
 						</Upload>
 						<div className='text-center text-gray-400'>or</div>
-						<Button type='primary' className='bg-secondary'>
-							Add Data manually
-						</Button>
+						<AddPOAPHolder setHolders={setHolders} />
 					</div>
 					<Collapse
 						items={[
