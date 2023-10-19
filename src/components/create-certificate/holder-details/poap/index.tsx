@@ -21,7 +21,7 @@ const POAPHolderDetails = () => {
 
 	const [holders, setHolders] = React.useState<POAPHolder[]>([]);
 
-	const [showCount, setShowCount] = React.useState<number>(6);
+	const [showCount, setShowCount] = React.useState<number>(4);
 
 	const createPreviewUrl = (file: File | Blob) => {
 		return new Promise<string>((resolve) => {
@@ -78,7 +78,7 @@ const POAPHolderDetails = () => {
 					}
 				},
 				complete: function () {
-					console.log('Done');
+					setHolders((prev) => Array.from(new Set(prev)));
 				},
 			});
 			return false;
@@ -146,7 +146,7 @@ const POAPHolderDetails = () => {
 						accordion
 						size='small'
 					/>
-					{holders.length > showCount && (
+					{holders.length >= showCount && (
 						<div className='flex flex-row gap-2'>
 							<div className='text-[1rem] text-slate-700'>
 								and{' '}
@@ -159,9 +159,27 @@ const POAPHolderDetails = () => {
 								className='bg-secondary'
 								type='primary'
 								size='small'
-								onClick={() => setShowCount((prev) => prev + 10)}
+								disabled={showCount === holders.length}
+								onClick={() => {
+									const remaining = holders.length - showCount;
+									if (remaining > 10) setShowCount((prev) => prev + 10);
+									else setShowCount((prev) => prev + remaining);
+								}}
 							>
 								Show more
+							</Button>
+							<Button
+								className='bg-secondary'
+								type='primary'
+								size='small'
+								disabled={showCount <= 6}
+								onClick={() => {
+									const remaining = holders.length - showCount;
+									if (remaining > 10) setShowCount((prev) => prev - 10);
+									else setShowCount((prev) => prev - 10 + 4);
+								}}
+							>
+								Show Less
 							</Button>
 						</div>
 					)}
