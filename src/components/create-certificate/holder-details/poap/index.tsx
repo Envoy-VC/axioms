@@ -6,6 +6,11 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 import { useCreateCertificateStore } from '~/stores';
 import type { POAPHolder } from '~/stores/create-certificate';
+import type {
+	BasicDetailsState,
+	CertificateTransactionsState,
+	POAPCertificateState,
+} from '~/stores/create-certificate';
 
 import { TbCertificate } from 'react-icons/tb';
 
@@ -13,13 +18,26 @@ import FormFooter from '../../form-footer';
 import PageLayout from '../../layout';
 import POAPHolderPill from './holder-pill';
 
+type POAPStoreState = BasicDetailsState &
+	POAPCertificateState &
+	CertificateTransactionsState;
+
 const POAPHolderDetails = () => {
-	const { prevStep, nextStep, setCertificateHolders } =
-		useCreateCertificateStore();
-	const [fileList, setFileList] = React.useState<UploadFile[]>([]);
+	const {
+		prevStep,
+		nextStep,
+		setCertificateHolders,
+		holders: certificateHolders,
+	} = useCreateCertificateStore();
+	const certificate = useCreateCertificateStore(
+		(state) => (state as POAPStoreState).certificate
+	);
+	const [fileList, setFileList] = React.useState<UploadFile[]>(
+		certificate ? [certificate] : []
+	);
 	const [csvFiles, setCsvFiles] = React.useState<UploadFile[]>([]);
 
-	const [holders, setHolders] = React.useState<POAPHolder[]>([]);
+	const [holders, setHolders] = React.useState<POAPHolder[]>(certificateHolders);
 
 	const [showCount, setShowCount] = React.useState<number>(4);
 
@@ -90,11 +108,18 @@ const POAPHolderDetails = () => {
 	};
 
 	const onPrev = () => {
+		setCertificateHolders({
+			certificate: fileList[0],
+			holders: holders,
+		});
 		prevStep();
 	};
 
 	const onNext = () => {
-		setCertificateHolders({ certificate: fileList[0] as RcFile, holders: [] });
+		setCertificateHolders({
+			certificate: fileList[0] as RcFile,
+			holders: holders,
+		});
 		nextStep();
 	};
 

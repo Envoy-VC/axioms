@@ -1,5 +1,10 @@
 import { create } from 'zustand';
 
+
+
+import { UploadFile } from 'antd';
+
+
 interface CounterState {
 	currentStep: number;
 	nextStep: () => void;
@@ -18,7 +23,7 @@ export type POAPHolder = {
 } & Record<string, string>;
 
 export interface POAPCertificateState {
-	certificate: File;
+	certificate: UploadFile | undefined;
 	holders: POAPHolder[];
 }
 
@@ -33,7 +38,7 @@ export interface BasicCertificateState {
 
 type CertificateState = POAPCertificateState | BasicCertificateState;
 
-interface CertificateTransactionsState {
+export interface CertificateTransactionsState {
 	arweaveTxId: string;
 	contractAddress: string;
 }
@@ -58,7 +63,7 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	eventName: '',
 	eventDescription: '',
 	eventType: 'online',
-	certificate: {} as File,
+	certificate: null,
 	holders: [],
 	arweaveTxId: '',
 	contractAddress: '',
