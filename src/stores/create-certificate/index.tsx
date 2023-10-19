@@ -6,7 +6,7 @@ interface CounterState {
 	prevStep: () => void;
 }
 
-interface BasicDetailsState {
+export interface BasicDetailsState {
 	type: 'poap' | 'basic';
 	eventName: string;
 	eventDescription: string;

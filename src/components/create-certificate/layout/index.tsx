@@ -16,7 +16,7 @@ const PageLayout = ({ children, image, imageAlt, title, footer }: Props) => {
 	return (
 		<div className='flex h-[92vh] flex-row'>
 			<div className='basis-1/1 w-full px-2 pt-8 sm:p-8 lg:basis-1/2 lg:pt-16'>
-				<div className='mx-auto flex min-h-[80vh] max-w-3xl flex-col justify-between border-2'>
+				<div className='mx-auto flex min-h-[80vh] max-w-2xl flex-col justify-between'>
 					<div className='flex flex-col gap-8'>
 						<div className='flex flex-col gap-2'>
 							<div className='text-3xl font-medium text-slate-700'>{title}</div>

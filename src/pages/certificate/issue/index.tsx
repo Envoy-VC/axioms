@@ -3,21 +3,30 @@ import type { ReactElement } from 'react';
 
 import { useWallet } from '@thirdweb-dev/react';
 
+import { Form } from 'antd';
+
 import { Layout } from '~/components';
 import { EventDetails } from '~/components/create-certificate';
+import {
+	BasicHolderDetails,
+	POAPHolderDetails,
+} from '~/components/create-certificate/holder-details';
 import { ConnectOrganizationWallet } from '~/components/screens';
 import { useCreateCertificateStore } from '~/stores';
 
 import type { NextPageWithLayout } from '../../_app';
 
 const CreateCertification: NextPageWithLayout = () => {
-	const { currentStep } = useCreateCertificateStore();
+	const { currentStep, type } = useCreateCertificateStore();
 	const walletInstance = useWallet();
 
-	switch (currentStep) {
-		case 1:
-			return <EventDetails />;
-	}
+	return (
+		<Form.Provider>
+			{currentStep === 1 && <EventDetails />}
+			{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
+			{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
+		</Form.Provider>
+	);
 
 	// if (walletInstance?.walletId !== 'safe') {
 	// 	return <ConnectOrganizationWallet />;
