@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 import React from 'react';
 
-import { Button, Upload, message } from 'antd';
+import { Button, Collapse, Upload, message } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 import { useCreateCertificateStore } from '~/stores';
@@ -11,6 +11,7 @@ import { TbCertificate } from 'react-icons/tb';
 
 import FormFooter from '../../form-footer';
 import PageLayout from '../../layout';
+import POAPHolderPill from './holder-pill';
 
 const POAPHolderDetails = () => {
 	const { prevStep, nextStep, setCertificateHolders } =
@@ -19,6 +20,8 @@ const POAPHolderDetails = () => {
 	const [csvFiles, setCsvFiles] = React.useState<UploadFile[]>([]);
 
 	const [holders, setHolders] = React.useState<POAPHolder[]>([]);
+
+	const [showCount, setShowCount] = React.useState<number>(6);
 
 	const createPreviewUrl = (file: File | Blob) => {
 		return new Promise<string>((resolve) => {
@@ -63,11 +66,19 @@ const POAPHolderDetails = () => {
 			setCsvFiles(newFileList);
 		},
 		beforeUpload: (file) => {
+			setHolders([]);
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			Papa.parse(file as File, {
+				worker: true,
 				header: true,
-				complete: function (results) {
-					console.log(results);
+				step: function (row) {
+					const data = row.data as POAPHolder;
+					if (!!data && data.address) {
+						setHolders((prev) => [...prev, data ?? {}]);
+					}
+				},
+				complete: function () {
+					console.log('Done');
 				},
 			});
 			return false;
@@ -122,6 +133,38 @@ const POAPHolderDetails = () => {
 							Add Data manually
 						</Button>
 					</div>
+					<Collapse
+						items={[
+							...holders.slice(0, showCount).map((holder, index) => {
+								return {
+									key: index,
+									label: holder.address,
+									children: <POAPHolderPill data={holder} key={index} />,
+								};
+							}),
+						]}
+						accordion
+						size='small'
+					/>
+					{holders.length > showCount && (
+						<div className='flex flex-row gap-2'>
+							<div className='text-[1rem] text-slate-700'>
+								and{' '}
+								<span className='font-medium text-secondary'>
+									{holders.length - showCount}
+								</span>{' '}
+								more
+							</div>
+							<Button
+								className='bg-secondary'
+								type='primary'
+								size='small'
+								onClick={() => setShowCount((prev) => prev + 10)}
+							>
+								Show more
+							</Button>
+						</div>
+					)}
 				</div>
 			</div>
 		</PageLayout>

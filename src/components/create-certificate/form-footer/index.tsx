@@ -15,7 +15,7 @@ interface Props {
 const FormFooter = ({ onNext = () => true, onPrev = () => true }: Props) => {
 	const { currentStep } = useCreateCertificateStore();
 	return (
-		<div className='flex w-full flex-row items-center justify-between'>
+		<div className='flex w-full flex-row items-center justify-between my-16'>
 			{currentStep !== 1 && (
 				<Button
 					className='flex items-center justify-center gap-2'
