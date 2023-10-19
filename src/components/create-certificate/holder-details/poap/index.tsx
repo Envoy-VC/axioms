@@ -110,8 +110,8 @@ const POAPHolderDetails = () => {
 
 	const onPrev = () => {
 		setCertificateHolders({
-			certificate: fileList[0] as RcFile,
-			holders: holders,
+			certificate: undefined,
+			holders: [],
 		});
 		prevStep();
 	};

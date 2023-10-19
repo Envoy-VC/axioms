@@ -17,20 +17,20 @@ const BasicCertificateHolderPill = ({ data }: Props) => {
 					if (typeof value === 'string')
 						return (
 							<div key={index} className='flex flex-row gap-2'>
-								<div className='text-sm font-medium text-slate-700'>
-									{key.slice(0, 1).toUpperCase() + key.slice(1)}:
-								</div>
+								<div className='text-sm font-medium text-slate-700'>{key}:</div>
 								<div className='text-sm text-slate-700'>{value}</div>
 							</div>
 						);
 				})}
 			</div>
 			<div className='w-full basis-1/2'>
-				<Image
-					src={URL.createObjectURL(data.certificate!)}
-					alt={data.certificate?.name}
-					className='rounded-md'
-				/>
+				{data.certificate && (
+					<Image
+						src={URL.createObjectURL(data.certificate)}
+						alt={data.certificate?.name}
+						className='rounded-md'
+					/>
+				)}
 			</div>
 		</div>
 	);

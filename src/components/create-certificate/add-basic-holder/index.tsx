@@ -59,6 +59,14 @@ const AddBasicHolder = ({ setHolders }: Props) => {
 	};
 
 	const onSave = () => {
+		if (fileList.length === 0) {
+			void message.error('Please upload a certificate');
+			return;
+		}
+		if (!entries.address) {
+			void message.error('Please enter an address');
+			return;
+		}
 		const newEntries = entries;
 		newEntries.certificate = fileList[0] as RcFile;
 		setHolders((prev) => [...prev, newEntries]);
@@ -98,9 +106,7 @@ const AddBasicHolder = ({ setHolders }: Props) => {
 								className='flex flex-row justify-between gap-2 border-b-[1px] border-gray-100'
 							>
 								<div className='flex flex-row gap-2'>
-									<div className='text-sm font-medium text-slate-700'>
-										{key.slice(0, 1).toUpperCase() + key.slice(1)}:
-									</div>
+									<div className='text-sm font-medium text-slate-700'>{key}:</div>
 									<div className='text-sm text-slate-700'>{value}</div>
 								</div>
 								<Button

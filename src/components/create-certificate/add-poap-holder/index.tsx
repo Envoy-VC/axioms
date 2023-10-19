@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Input } from 'antd';
+import { Button, Input, message } from 'antd';
 
 import type { POAPHolder } from '~/stores/create-certificate';
 
@@ -33,6 +33,10 @@ const AddPOAPHolder = ({ setHolders }: Props) => {
 	};
 
 	const onSave = () => {
+		if (!entries.address) {
+			void message.error('Please enter an address');
+			return;
+		}
 		setHolders((prev) => [...prev, entries]);
 		setEntries({});
 		setKey('');
@@ -68,9 +72,7 @@ const AddPOAPHolder = ({ setHolders }: Props) => {
 							className='flex flex-row justify-between gap-2 border-b-[1px] border-gray-100'
 						>
 							<div className='flex flex-row gap-2'>
-								<div className='text-sm font-medium text-slate-700'>
-									{key.slice(0, 1).toUpperCase() + key.slice(1)}:
-								</div>
+								<div className='text-sm font-medium text-slate-700'>{key}:</div>
 								<div className='text-sm text-slate-700'>{value}</div>
 							</div>
 							<Button

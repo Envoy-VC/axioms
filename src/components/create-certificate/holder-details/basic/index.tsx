@@ -21,6 +21,7 @@ const BasicHolderDetails = () => {
 	} = useCreateCertificateStore();
 
 	const [csvFiles, setCsvFiles] = React.useState<UploadFile[]>([]);
+	const [imgFiles, setImgFiles] = React.useState<UploadFile[]>([]);
 
 	const [holders, setHolders] =
 		React.useState<BasicCertificateHolder[]>(certificateHolders);
@@ -58,11 +59,41 @@ const BasicHolderDetails = () => {
 		accept: 'text/csv',
 	};
 
+	const imgProps: UploadProps = {
+		onRemove: (file) => {
+			const index = imgFiles.indexOf(file);
+			const newFileList = imgFiles.slice();
+			newFileList.splice(index, 1);
+			setImgFiles(newFileList);
+		},
+		beforeUpload: (file) => {
+			// search file name in holders address and set the certificate for that holder only if found
+			const holder = holders.find(
+				(holder) => holder.address === file.name.split('.')[0]
+			);
+			if (holder) {
+				holder.certificate = file;
+				setHolders((prev) => [...prev]);
+			}
+			return false;
+		},
+		fileList: csvFiles,
+		listType: 'text',
+		multiple: true,
+		accept: 'image/*',
+	};
+
 	const onPrev = () => {
+		setCertificateHolders({
+			holders: [],
+		});
 		prevStep();
 	};
 
 	const onNext = () => {
+		setCertificateHolders({
+			holders: holders,
+		});
 		nextStep();
 	};
 
@@ -79,9 +110,16 @@ const BasicHolderDetails = () => {
 						Add Holder Details
 					</div>
 					<div className='flex w-full flex-col gap-0'>
-						<Upload {...csvProps} prefixCls='w-full'>
-							<Button className='w-full'>Upload CSV File</Button>
-						</Upload>
+						<div className='flex w-full flex-row gap-2'>
+							<Upload {...csvProps}>
+								<Button className='w-full'>Upload CSV File</Button>
+							</Upload>
+							<Upload {...imgProps}>
+								<Button className='w-full bg-secondary text-white' type='primary'>
+									Upload Certificates
+								</Button>
+							</Upload>
+						</div>
 						<div className='text-center text-gray-400'>or</div>
 						<AddBasicHolder setHolders={setHolders} />
 					</div>
