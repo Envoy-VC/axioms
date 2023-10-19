@@ -34,7 +34,7 @@ interface DropdownItemProps {
 const ProfileInstance = () => {
 	const walletInstance = useWallet();
 	const isSafeWallet = walletInstance?.walletId === 'safe';
-
+	const router = useRouter();
 	if (isSafeWallet) {
 		return [
 			{
@@ -43,7 +43,13 @@ const ProfileInstance = () => {
 			},
 			{
 				key: '3',
-				label: <DropDownItem name='Issue Certificates' Icon={TbCertificate} />,
+				label: (
+					<DropDownItem
+						name='Issue Certificates'
+						Icon={TbCertificate}
+						handleClick={() => router.push('/certificate/issue')}
+					/>
+				),
 			},
 		];
 	} else {
