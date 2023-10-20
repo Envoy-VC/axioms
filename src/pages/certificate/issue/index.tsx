@@ -22,21 +22,19 @@ const CreateCertification: NextPageWithLayout = () => {
 	const { currentStep, type } = useCreateCertificateStore();
 	const walletInstance = useWallet();
 
-	return (
-		<Form.Provider>
-			{currentStep === 1 && <EventDetails />}
-			{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
-			{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
-			{currentStep === 3 && <VerificationDetails />}
-			{currentStep === 4 && <ReviewCreateCertificate />}
-		</Form.Provider>
-	);
-
-	// if (walletInstance?.walletId !== 'safe') {
-	// 	return <ConnectOrganizationWallet />;
-	// } else {
-	// 	return <div>Dashboard</div>;
-	// }
+	if (walletInstance?.walletId !== 'safe') {
+		return <ConnectOrganizationWallet />;
+	} else {
+		return (
+			<Form.Provider>
+				{currentStep === 1 && <EventDetails />}
+				{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
+				{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
+				{currentStep === 3 && <VerificationDetails />}
+				{currentStep === 4 && <ReviewCreateCertificate />}
+			</Form.Provider>
+		);
+	}
 };
 
 CreateCertification.getLayout = function getLayout(page: ReactElement) {

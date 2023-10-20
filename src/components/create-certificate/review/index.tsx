@@ -4,7 +4,6 @@ import { useWallet } from '@thirdweb-dev/react';
 
 import { Button } from 'antd';
 
-import { OrganizationLogin } from '~/components/login';
 import { useUploadToArweave } from '~/hooks';
 import { useCreateCertificateStore } from '~/stores';
 
@@ -14,8 +13,7 @@ import PageLayout from '../layout';
 import PreviewCertificateDetails from '../preview-details';
 
 const ReviewCreateCertificate = () => {
-	const { prevStep, arweaveManifestId, setArweaveManifestId } =
-		useCreateCertificateStore();
+	const { prevStep, arweaveManifestId } = useCreateCertificateStore();
 	const walletInstance = useWallet();
 	const { uploadFiles } = useUploadToArweave();
 	return (
