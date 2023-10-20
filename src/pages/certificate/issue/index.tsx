@@ -6,11 +6,12 @@ import { useWallet } from '@thirdweb-dev/react';
 import { Form } from 'antd';
 
 import { Layout } from '~/components';
-import { EventDetails } from '~/components/create-certificate';
 import {
 	BasicHolderDetails,
+	EventDetails,
 	POAPHolderDetails,
-} from '~/components/create-certificate/holder-details';
+	VerificationDetails,
+} from '~/components/create-certificate';
 import { ConnectOrganizationWallet } from '~/components/screens';
 import { useCreateCertificateStore } from '~/stores';
 
@@ -25,6 +26,7 @@ const CreateCertification: NextPageWithLayout = () => {
 			{currentStep === 1 && <EventDetails />}
 			{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
 			{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
+			{currentStep === 3 && <VerificationDetails />}
 		</Form.Provider>
 	);
 
