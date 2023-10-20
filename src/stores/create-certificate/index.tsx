@@ -5,7 +5,7 @@ import { RcFile } from 'antd/es/upload';
 
 import { Config } from '~/helpers/sismo';
 
-interface CounterState {
+export interface CounterState {
 	currentStep: number;
 	nextStep: () => void;
 	prevStep: () => void;
@@ -43,7 +43,7 @@ export interface CertificateTransactionsState {
 	contractAddress: string;
 }
 
-interface Actions {
+export interface Actions {
 	setBasicDetails: (basicDetails: BasicDetailsState) => void;
 	setCertificateHolders: (
 		holders: POAPCertificateState | BasicCertificateState
@@ -52,12 +52,12 @@ interface Actions {
 	setContractAddress: (contractAddress: string) => void;
 }
 
-interface VerificationState {
+export interface VerificationState {
 	verificationConfig: Config;
 	setVerificationConfig: (config: Config) => void;
 }
 
-type State = CounterState &
+export type State = CounterState &
 	BasicDetailsState &
 	CertificateState &
 	VerificationState &

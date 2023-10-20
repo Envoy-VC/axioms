@@ -42,7 +42,7 @@ const PreviewCertificateDetails = () => {
 		{
 			key: 'holders',
 			label: 'Holders',
-			className: 'min-w-[500px]',
+			className: 'sm:min-w-[500px]',
 			children: (
 				<div className='flex flex-col gap-2'>
 					<div className='flex flex-col'>
