@@ -1,9 +1,8 @@
 import { create } from 'zustand';
 
-import { UploadFile } from 'antd';
-import { RcFile } from 'antd/es/upload';
+import type { RcFile } from 'antd/es/upload';
 
-import { Config } from '~/helpers/sismo';
+import type { Config } from '~/helpers/sismo';
 
 export interface CounterState {
 	currentStep: number;
@@ -39,8 +38,7 @@ export interface BasicCertificateState {
 type CertificateState = POAPCertificateState | BasicCertificateState;
 
 export interface CertificateTransactionsState {
-	arweaveTxId: string;
-	contractAddress: string;
+	arweaveManifestId: string;
 }
 
 export interface Actions {
@@ -48,8 +46,7 @@ export interface Actions {
 	setCertificateHolders: (
 		holders: POAPCertificateState | BasicCertificateState
 	) => void;
-	setArweaveTxId: (arweaveTxId: string) => void;
-	setContractAddress: (contractAddress: string) => void;
+	setArweaveManifestId: (arweaveTxId: string) => void;
 }
 
 export interface VerificationState {
@@ -71,7 +68,7 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	eventType: 'online',
 	certificate: null,
 	holders: [],
-	arweaveTxId: '',
+	arweaveManifestId: '7qXqoq2TGDkwTYAopT7BQfk9HuRNR3KqRExybUf22ps',
 	contractAddress: '',
 	verificationConfig: { auth: [], claims: [] },
 	nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),
@@ -79,6 +76,5 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	setBasicDetails: (basicDetails) => set(basicDetails),
 	setCertificateHolders: (holders) => set(holders),
 	setVerificationConfig: (verificationConfig) => set({ verificationConfig }),
-	setArweaveTxId: (arweaveTxId) => set({ arweaveTxId }),
-	setContractAddress: (contractAddress) => set({ contractAddress }),
+	setArweaveManifestId: (arweaveManifestId) => set({ arweaveManifestId }),
 }));

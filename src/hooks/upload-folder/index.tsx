@@ -1,10 +1,19 @@
 import { WebIrys } from '@irys/sdk';
+import type { TaggedFile } from '@irys/sdk/build/cjs/web/upload';
 import { providers } from 'ethers';
 import React from 'react';
 
 import { env } from '~/env.mjs';
 import { useCreateCertificateStore } from '~/stores';
-import type { POAPCertificateState } from '~/stores/create-certificate';
+import type {
+	POAPCertificateState,
+	POAPHolder,
+} from '~/stores/create-certificate';
+
+export interface Tag {
+	name: string;
+	value: string;
+}
 
 const irysConfig = () => {
 	if (env.NEXT_PUBLIC_ENV === 'development') {
@@ -21,38 +30,97 @@ const irysConfig = () => {
 };
 
 const useUploadToArweave = () => {
-	const { holders } = useCreateCertificateStore();
+	const {
+		eventName,
+		eventDescription,
+		eventType,
+		holders,
+		setArweaveManifestId,
+	} = useCreateCertificateStore();
 	const certificate = useCreateCertificateStore(
 		(state) => (state as POAPCertificateState).certificate
 	);
-	const [webIrys, setWebIrys] = React.useState<WebIrys | null>(null);
-	const [isReady, setIsReady] = React.useState<boolean>(false);
+
 	const [isUploading, setIsUploading] = React.useState<boolean>(false);
 	const [error, setError] = React.useState<string | null>(null);
 
-	React.useEffect(() => {
-		void initialize();
-	}, []);
+	const getFiles = () => {
+		const defaultTags: Tag[] = [
+			{ name: 'App-Name', value: 'Axioms' },
+			{ name: 'App-Version', value: '0.1.0' },
+			{ name: 'Title', value: eventName },
+			{ name: 'Description', value: eventDescription },
+			{ name: 'Unix-Time', value: String(Math.round(Date.now() / 1000)) },
+		];
+		if (certificate) {
+			const files: TaggedFile[] = [];
+			const certificateFile: TaggedFile = certificate;
+			certificateFile.tags = [
+				...defaultTags,
+				{
+					name: 'Content-Type',
+					value: certificate.type,
+				},
+			];
+
+			const metadata = {
+				eventName,
+				eventDescription,
+				eventType,
+				holders: holders.map((holder: POAPHolder) => holder),
+			};
+			// create a new metadata.json file instance  and push to files
+			const metadataFile: File = new File(
+				[JSON.stringify(metadata)],
+				'metadata.json',
+				{
+					type: 'application/json',
+				}
+			);
+			const metadataFileTagged: TaggedFile = metadataFile;
+			metadataFileTagged.tags = [
+				...defaultTags,
+				{
+					name: 'Content-Type',
+					value: metadataFile.type,
+				},
+			];
+			files.push(metadataFileTagged);
+			files.push(certificateFile);
+			return files;
+		} else {
+			return [];
+		}
+	};
 
 	const initialize = async () => {
 		try {
-			setIsReady(false);
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+			await window.ethereum.enable();
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			const provider = new providers.Web3Provider(window.ethereum);
+			const wallet = { name: 'ethersv5', provider: provider };
 			const { url, token } = irysConfig();
-			const webIrys = new WebIrys({ url, token, wallet: provider });
+			const webIrys = new WebIrys({ url, token, wallet });
+			console.log(webIrys);
 			await webIrys.ready();
-			setWebIrys(webIrys);
-			setIsReady(true);
 			return webIrys;
 		} catch (error) {
-			setIsReady(false);
+			console.log(error);
 		}
 	};
 
 	const uploadFiles = async () => {
 		try {
 			setIsUploading(true);
+			const files = getFiles();
+			const irys = await initialize();
+			if (!irys) return;
+			const receipt = await irys.uploadFolder(files);
+			setArweaveManifestId(receipt.manifestId);
+			console.log(
+				`Files uploaded. Manifest Id=${receipt.manifestId} Receipt Id=${receipt.id}`
+			);
 		} catch (error) {
 			setError(String(error));
 			console.log(error);
@@ -61,7 +129,7 @@ const useUploadToArweave = () => {
 		}
 	};
 
-	return { webIrys, isReady, isUploading, error, uploadFiles, initialize };
+	return { isUploading, error, uploadFiles, initialize };
 };
 
 export default useUploadToArweave;

@@ -5,6 +5,7 @@ import { useWallet } from '@thirdweb-dev/react';
 import { Button } from 'antd';
 
 import { OrganizationLogin } from '~/components/login';
+import { useUploadToArweave } from '~/hooks';
 import { useCreateCertificateStore } from '~/stores';
 
 import { TbCircleArrowDown, TbCircleArrowRight } from 'react-icons/tb';
@@ -13,14 +14,10 @@ import PageLayout from '../layout';
 import PreviewCertificateDetails from '../preview-details';
 
 const ReviewCreateCertificate = () => {
-	const {
-		prevStep,
-		arweaveTxId,
-		contractAddress,
-		setContractAddress,
-		setArweaveTxId,
-	} = useCreateCertificateStore();
+	const { prevStep, arweaveManifestId, setArweaveManifestId } =
+		useCreateCertificateStore();
 	const walletInstance = useWallet();
+	const { uploadFiles } = useUploadToArweave();
 	return (
 		<PageLayout title='Review your Certificate' footer=''>
 			<div className='flex flex-col gap-4'>
@@ -42,6 +39,9 @@ const ReviewCreateCertificate = () => {
 						type='primary'
 						className='w-full bg-secondary sm:w-1/3'
 						size='large'
+						disabled={arweaveManifestId !== ''}
+						// eslint-disable-next-line @typescript-eslint/no-misused-promises
+						onClick={() => uploadFiles().catch((err) => console.error(err))}
 					>
 						Upload Certificates to Arweave
 					</Button>
@@ -51,27 +51,11 @@ const ReviewCreateCertificate = () => {
 						type='primary'
 						className='w-full bg-secondary sm:w-1/3'
 						size='large'
-						disabled={arweaveTxId === '' || walletInstance?.walletId !== 'safe'}
+						disabled={arweaveManifestId === '' || walletInstance?.walletId !== 'safe'}
 					>
-						Create Certificate Contract
-					</Button>
-					<TbCircleArrowRight className='hidden !text-3xl text-gray-400 sm:flex' />
-					<TbCircleArrowDown className='flex text-3xl text-gray-400 sm:hidden' />
-					<Button
-						type='primary'
-						className='w-full bg-secondary sm:w-1/3'
-						size='large'
-						disabled={contractAddress === '' || arweaveTxId === ''}
-					>
-						Publish Certificate
+						Propose Certificate Contract
 					</Button>
 				</div>
-				<div className='flex flex-col gap-2'>
-					<div className='text-3xl font-medium text-slate-700'>
-						Connected Wallets
-					</div>
-				</div>
-				<OrganizationLogin />
 			</div>
 		</PageLayout>
 	);
