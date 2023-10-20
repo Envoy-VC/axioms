@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 import React from 'react';
 
-import { Button, Collapse, Upload } from 'antd';
+import { Button, Collapse, Upload, message } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 
 import { useCreateCertificateStore } from '~/stores';
@@ -84,6 +84,10 @@ const BasicHolderDetails = () => {
 	};
 
 	const onPrev = () => {
+		if (holders.length === 0) {
+			void message.error('At least one holder is required');
+			return;
+		}
 		setCertificateHolders({
 			holders: [],
 		});

@@ -117,6 +117,14 @@ const POAPHolderDetails = () => {
 	};
 
 	const onNext = () => {
+		if (fileList.at(0) === undefined) {
+			void message.error('Certificate File is required');
+			return;
+		}
+		if (holders.length === 0) {
+			void message.error('At least one holder is required');
+			return;
+		}
 		setCertificateHolders({
 			certificate: fileList[0] as RcFile,
 			holders: holders,
