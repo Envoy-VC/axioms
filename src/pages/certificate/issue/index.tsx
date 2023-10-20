@@ -10,6 +10,7 @@ import {
 	BasicHolderDetails,
 	EventDetails,
 	POAPHolderDetails,
+	ReviewCreateCertificate,
 	VerificationDetails,
 } from '~/components/create-certificate';
 import { ConnectOrganizationWallet } from '~/components/screens';
@@ -27,6 +28,7 @@ const CreateCertification: NextPageWithLayout = () => {
 			{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
 			{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
 			{currentStep === 3 && <VerificationDetails />}
+			{currentStep === 4 && <ReviewCreateCertificate />}
 		</Form.Provider>
 	);
 

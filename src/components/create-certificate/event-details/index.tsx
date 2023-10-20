@@ -71,7 +71,7 @@ const EventDetails = () => {
 					</Select>
 				</Form.Item>
 				<div className='my-1 text-[1rem] font-medium text-slate-700'>
-					Event Details*
+					Event Name*
 				</div>
 				<Form.Item
 					name='eventName'

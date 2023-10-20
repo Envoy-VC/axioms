@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { Image } from 'antd';
@@ -6,8 +7,8 @@ import { TbEditOff } from 'react-icons/tb';
 
 interface Props {
 	children: React.ReactNode;
-	image: string;
-	imageAlt: string;
+	image?: string;
+	imageAlt?: string;
 	title: React.ReactNode;
 	footer: React.ReactNode;
 }
@@ -15,8 +16,18 @@ interface Props {
 const PageLayout = ({ children, image, imageAlt, title, footer }: Props) => {
 	return (
 		<div className='flex h-[92vh] flex-row'>
-			<div className='basis-1/1 w-full px-2 pt-8 sm:p-8 lg:basis-1/2 lg:pt-16'>
-				<div className='mx-auto flex min-h-[80vh] max-w-2xl flex-col justify-between'>
+			<div
+				className={clsx(
+					'w-full px-2 pt-8 sm:p-8 lg:pt-16',
+					image ? `basis-[100%] lg:basis-1/2` : 'basis-[100%]'
+				)}
+			>
+				<div
+					className={clsx(
+						'flex min-h-[80vh] flex-col justify-between',
+						image ? 'mx-auto max-w-2xl' : 'sm:px-16'
+					)}
+				>
 					<div className='flex flex-col gap-8'>
 						<div className='flex flex-col gap-2'>
 							<div className='text-3xl font-medium text-slate-700'>{title}</div>
@@ -30,14 +41,16 @@ const PageLayout = ({ children, image, imageAlt, title, footer }: Props) => {
 					{footer}
 				</div>
 			</div>
-			<div className='hidden w-full basis-1/2 select-none items-center justify-center bg-[rgb(248,250,252,0.35)] lg:flex'>
-				<Image
-					src={image}
-					alt={imageAlt}
-					preview={false}
-					className='object-contain'
-				/>
-			</div>
+			{image && (
+				<div className='hidden w-full basis-1/2 select-none items-center justify-center bg-[rgb(248,250,252,0.35)] lg:flex'>
+					<Image
+						src={image}
+						alt={imageAlt}
+						preview={false}
+						className='object-contain'
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
