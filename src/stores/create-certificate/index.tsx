@@ -68,7 +68,7 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	eventType: 'online',
 	certificate: null,
 	holders: [],
-	arweaveManifestId: '7qXqoq2TGDkwTYAopT7BQfk9HuRNR3KqRExybUf22ps',
+	arweaveManifestId: '',
 	contractAddress: '',
 	verificationConfig: { auth: [], claims: [] },
 	nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),

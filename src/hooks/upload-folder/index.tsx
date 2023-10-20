@@ -6,6 +6,7 @@ import React from 'react';
 import { env } from '~/env.mjs';
 import { useCreateCertificateStore } from '~/stores';
 import type {
+	BasicCertificateHolder,
 	POAPCertificateState,
 	POAPHolder,
 } from '~/stores/create-certificate';
@@ -35,6 +36,7 @@ const useUploadToArweave = () => {
 		eventDescription,
 		eventType,
 		holders,
+		verificationConfig,
 		setArweaveManifestId,
 	} = useCreateCertificateStore();
 	const certificate = useCreateCertificateStore(
@@ -68,6 +70,7 @@ const useUploadToArweave = () => {
 				eventDescription,
 				eventType,
 				holders: holders.map((holder: POAPHolder) => holder),
+				verificationConfig,
 			};
 			// create a new metadata.json file instance  and push to files
 			const metadataFile: File = new File(
@@ -89,7 +92,55 @@ const useUploadToArweave = () => {
 			files.push(certificateFile);
 			return files;
 		} else {
-			return [];
+			const files: TaggedFile[] = [];
+
+			holders.forEach((holder: BasicCertificateHolder) => {
+				if (!holder.certificate) return;
+				const certificateFile: TaggedFile = holder.certificate;
+				const tagsWithoutsCertificate = Object.entries(holder)
+					.map(([key, value]) => {
+						if (key !== 'certificate' || typeof value === 'string')
+							return { name: key, value };
+					})
+					.filter((value) => value !== undefined);
+				if (!tagsWithoutsCertificate) return;
+				certificateFile.tags = [
+					...defaultTags,
+					...(tagsWithoutsCertificate as Tag[]),
+					{
+						name: 'Content-Type',
+						value: holder.certificate.type,
+					},
+				];
+				files.push(certificateFile);
+			});
+			const metadata = {
+				eventName,
+				eventDescription,
+				eventType,
+				holders: holders.map((holder: BasicCertificateHolder) => {
+					const { certificate, ...rest } = holder;
+					return rest;
+				}),
+				verificationConfig,
+			};
+			const metadataFile: File = new File(
+				[JSON.stringify(metadata)],
+				'metadata.json',
+				{
+					type: 'application/json',
+				}
+			);
+			const metadataFileTagged: TaggedFile = metadataFile;
+			metadataFileTagged.tags = [
+				...defaultTags,
+				{
+					name: 'Content-Type',
+					value: metadataFile.type,
+				},
+			];
+			files.push(metadataFileTagged);
+			return files;
 		}
 	};
 
@@ -116,6 +167,7 @@ const useUploadToArweave = () => {
 			const files = getFiles();
 			const irys = await initialize();
 			if (!irys) return;
+			console.log(files);
 			const receipt = await irys.uploadFolder(files);
 			setArweaveManifestId(receipt.manifestId);
 			console.log(
