@@ -1,5 +1,6 @@
 require('@matterlabs/hardhat-zksync-solc');
 require('@nomicfoundation/hardhat-toolbox');
+require('@nomicfoundation/hardhat-verify');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -28,6 +29,13 @@ module.exports = {
 			chainId: 324,
 			zksync: true,
 		},
+		goerli: {
+			url: 'https://eth-goerli.g.alchemy.com/v2/demo',
+			chainId: 5,
+		},
+	},
+	etherscan: {
+		apiKey: '',
 	},
 	paths: {
 		artifacts: './artifacts-zk',
