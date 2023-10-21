@@ -19,20 +19,23 @@ const useDeployContract = () => {
 		holders.forEach((holder) => {
 			if (holder.address) addressArray.push(holder.address);
 		});
+		console.log(addressArray);
 		const leaves = addressArray.map((x) => keccak256(x));
 		const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 		const root = '0x' + tree.getRoot().toString('hex');
+		console.log(root);
 		return root;
 	};
 
 	const deployContract = async () => {
 		try {
 			setIsDeploying(true);
-			console.log(address);
+			const merkleRoot = getMerkleRoot();
+			return;
 			const res = await sdk?.deployer.deployPublishedContract(
 				'0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1',
 				'Axiom',
-				[address, arweaveManifestId, getMerkleRoot()]
+				[address, arweaveManifestId, merkleRoot]
 			);
 			console.log(res);
 			return res;
