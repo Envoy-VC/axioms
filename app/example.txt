@@ -1,2 +1,4 @@
 manifestId - DIKO1fJ5yLSSH0DdzLO3VBiZhMZ2KiOZuo88nYeJ11A
 receiptId - KyjpIhQJupAt8Ee1Cf3Fs5xFqXoEVw_r-vI3HC-tFXY
+
+Deployed Contract Goerli - 0x996e77fffabe973d609f8e251aa7959affc24144
