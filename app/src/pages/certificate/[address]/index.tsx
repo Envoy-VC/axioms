@@ -12,7 +12,7 @@ import type { NextPageWithLayout } from '../../_app';
 const CertificatePage: NextPageWithLayout = () => {
 	const onFetch = async () => {
 		const res = await fetch(
-			'/api/DIKO1fJ5yLSSH0DdzLO3VBiZhMZ2KiOZuo88nYeJ11A/0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1'
+			'/api/DIKO1fJ5yLSSH0DdzLO3VBiZhMZ2KiOZuo88nYeJ11A/0xbf4979305b43b0eb5bb6a5c67ffb89408803d3e1'
 		);
 		const data = (await res.json()) as object;
 		console.log(data);

@@ -38,7 +38,9 @@ export default async function handler(
 		)
 		.catch((err) => console.log(err));
 
-	const holder = (holders as any[]).find((holder) => holder.address === address);
+	const holder = (holders as any[]).find(
+		(holder) => holder.address.toLowerCase() === address?.toLowerCase()
+	);
 	delete holder.address;
 
 	const openSeaAttributes = Object.entries(holder).map(([key, value], index) => {
