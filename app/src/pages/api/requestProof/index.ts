@@ -1,19 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import keccak256 from 'keccak256';
 import MerkleTree from 'merkletreejs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { Holder } from '~/stores/create-certificate';
+import { getMetadata } from '~/helpers/arweave';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -21,26 +10,24 @@ export default async function handler(
 ) {
 	console.log('here');
 	console.log(req.body);
-	const { manifestId, address } = JSON.parse(req.body);
+	const { manifestId, address } = JSON.parse(req.body as string) as {
+		manifestId: string;
+		address: string;
+	};
 
 	console.log(manifestId, address);
 
-	const response = await fetch(
-		`https://gateway.irys.xyz/${manifestId}/metadata.json`
-	)
-		.then((res) => res.json() as any)
-		.catch((err) => console.log(err));
+	const metadata = await getMetadata(manifestId);
+	if (!metadata) throw new Error('Metadata not found');
 
-	const { holders } = response;
+	const { holders } = metadata;
 
-	const addressArray = (holders as Holder[]).map(
-		(holder) => holder.address
-	) as string[];
+	const addressArray = holders.map((holder) => holder.address) as string[];
 
 	if (!addressArray.includes(address))
 		return res.status(400).json({ message: 'Address not found in manifest' });
 
-	const buf2hex = (x: any) => '0x' + x.toString('hex');
+	const buf2hex = (x: Buffer) => '0x' + x.toString('hex');
 	const leaves = addressArray.map((x) => keccak256(x));
 	const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 
