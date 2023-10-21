@@ -7,7 +7,6 @@ import { Form } from 'antd';
 
 import { Layout } from '~/components';
 import {
-	BasicHolderDetails,
 	EventDetails,
 	POAPHolderDetails,
 	ReviewCreateCertificate,
@@ -28,7 +27,6 @@ const CreateCertification: NextPageWithLayout = () => {
 		return (
 			<Form.Provider>
 				{currentStep === 1 && <EventDetails />}
-				{currentStep === 2 && type === 'basic' && <BasicHolderDetails />}
 				{currentStep === 2 && type === 'poap' && <POAPHolderDetails />}
 				{currentStep === 3 && <VerificationDetails />}
 				{currentStep === 4 && <ReviewCreateCertificate />}

@@ -67,7 +67,6 @@ const EventDetails = () => {
 						<Select.Option value='poap'>
 							POAP - Attendance/Participation Certificates
 						</Select.Option>
-						<Select.Option value='basic'>General - Unique Certificates</Select.Option>
 					</Select>
 				</Form.Item>
 				<div className='my-1 text-[1rem] font-medium text-slate-700'>

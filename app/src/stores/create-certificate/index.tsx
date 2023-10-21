@@ -17,25 +17,14 @@ export interface BasicDetailsState {
 	eventType: 'online' | 'offline';
 }
 
-export type POAPHolder = {
+export type Holder = {
 	address?: string;
 } & Record<string, string>;
 
-export interface POAPCertificateState {
+export interface CertificateState {
 	certificate?: RcFile;
-	holders: POAPHolder[];
+	holders: Holder[];
 }
-
-export type BasicCertificateHolder = {
-	address?: string;
-	certificate?: RcFile;
-} & Record<string, string>;
-
-export interface BasicCertificateState {
-	holders: BasicCertificateHolder[];
-}
-
-type CertificateState = POAPCertificateState | BasicCertificateState;
 
 export interface CertificateTransactionsState {
 	arweaveManifestId: string;
@@ -43,9 +32,7 @@ export interface CertificateTransactionsState {
 
 export interface Actions {
 	setBasicDetails: (basicDetails: BasicDetailsState) => void;
-	setCertificateHolders: (
-		holders: POAPCertificateState | BasicCertificateState
-	) => void;
+	setCertificateHolders: (holders: CertificateState) => void;
 	setArweaveManifestId: (arweaveTxId: string) => void;
 }
 
@@ -66,7 +53,7 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	eventName: '',
 	eventDescription: '',
 	eventType: 'online',
-	certificate: null,
+	certificate: undefined,
 	holders: [],
 	arweaveManifestId: '',
 	contractAddress: '',

@@ -5,11 +5,7 @@ import React from 'react';
 
 import { env } from '~/env.mjs';
 import { useCreateCertificateStore } from '~/stores';
-import type {
-	BasicCertificateHolder,
-	POAPCertificateState,
-	POAPHolder,
-} from '~/stores/create-certificate';
+import type { Holder } from '~/stores/create-certificate';
 
 export interface Tag {
 	name: string;
@@ -32,16 +28,15 @@ const irysConfig = () => {
 
 const useUploadToArweave = () => {
 	const {
+		type,
 		eventName,
 		eventDescription,
 		eventType,
 		holders,
 		verificationConfig,
+		certificate,
 		setArweaveManifestId,
 	} = useCreateCertificateStore();
-	const certificate = useCreateCertificateStore(
-		(state) => (state as POAPCertificateState).certificate
-	);
 
 	const [isUploading, setIsUploading] = React.useState<boolean>(false);
 	const [error, setError] = React.useState<string | null>(null);
@@ -54,94 +49,44 @@ const useUploadToArweave = () => {
 			{ name: 'Description', value: eventDescription },
 			{ name: 'Unix-Time', value: String(Math.round(Date.now() / 1000)) },
 		];
-		if (certificate) {
-			const files: TaggedFile[] = [];
-			const certificateFile: TaggedFile = certificate;
-			certificateFile.tags = [
-				...defaultTags,
-				{
-					name: 'Content-Type',
-					value: certificate.type,
-				},
-			];
+		if (!certificate) return;
 
-			const metadata = {
-				eventName,
-				eventDescription,
-				eventType,
-				holders: holders.map((holder: POAPHolder) => holder),
-				verificationConfig,
-			};
-			// create a new metadata.json file instance  and push to files
-			const metadataFile: File = new File(
-				[JSON.stringify(metadata)],
-				'metadata.json',
-				{
-					type: 'application/json',
-				}
-			);
-			const metadataFileTagged: TaggedFile = metadataFile;
-			metadataFileTagged.tags = [
-				...defaultTags,
-				{
-					name: 'Content-Type',
-					value: metadataFile.type,
-				},
-			];
-			files.push(metadataFileTagged);
-			files.push(certificateFile);
-			return files;
-		} else {
-			const files: TaggedFile[] = [];
+		const files: TaggedFile[] = [];
+		const certificateFile: TaggedFile = certificate;
+		certificateFile.tags = [
+			...defaultTags,
+			{
+				name: 'Content-Type',
+				value: certificate.type,
+			},
+		];
 
-			holders.forEach((holder: BasicCertificateHolder) => {
-				if (!holder.certificate) return;
-				const certificateFile: TaggedFile = holder.certificate;
-				const tagsWithoutsCertificate = Object.entries(holder)
-					.map(([key, value]) => {
-						if (key !== 'certificate' || typeof value === 'string')
-							return { name: key, value };
-					})
-					.filter((value) => value !== undefined);
-				if (!tagsWithoutsCertificate) return;
-				certificateFile.tags = [
-					...defaultTags,
-					...(tagsWithoutsCertificate as Tag[]),
-					{
-						name: 'Content-Type',
-						value: holder.certificate.type,
-					},
-				];
-				files.push(certificateFile);
-			});
-			const metadata = {
-				eventName,
-				eventDescription,
-				eventType,
-				holders: holders.map((holder: BasicCertificateHolder) => {
-					const { certificate, ...rest } = holder;
-					return rest;
-				}),
-				verificationConfig,
-			};
-			const metadataFile: File = new File(
-				[JSON.stringify(metadata)],
-				'metadata.json',
-				{
-					type: 'application/json',
-				}
-			);
-			const metadataFileTagged: TaggedFile = metadataFile;
-			metadataFileTagged.tags = [
-				...defaultTags,
-				{
-					name: 'Content-Type',
-					value: metadataFile.type,
-				},
-			];
-			files.push(metadataFileTagged);
-			return files;
-		}
+		const metadata = {
+			type,
+			eventName,
+			eventDescription,
+			eventType,
+			holders,
+			verificationConfig,
+		};
+		const metadataFile: File = new File(
+			[JSON.stringify(metadata)],
+			'metadata.json',
+			{
+				type: 'application/json',
+			}
+		);
+		const metadataFileTagged: TaggedFile = metadataFile;
+		metadataFileTagged.tags = [
+			...defaultTags,
+			{
+				name: 'Content-Type',
+				value: metadataFile.type,
+			},
+		];
+		files.push(metadataFileTagged);
+		files.push(certificateFile);
+		return files;
 	};
 
 	const initialize = async () => {
@@ -167,12 +112,10 @@ const useUploadToArweave = () => {
 			const files = getFiles();
 			const irys = await initialize();
 			if (!irys) return;
-			console.log(files);
+			if (!files) return;
 			const receipt = await irys.uploadFolder(files);
+			console.log({ manifestId: receipt.manifestId, receiptId: receipt.id });
 			setArweaveManifestId(receipt.manifestId);
-			console.log(
-				`Files uploaded. Manifest Id=${receipt.manifestId} Receipt Id=${receipt.id}`
-			);
 		} catch (error) {
 			setError(String(error));
 			console.log(error);

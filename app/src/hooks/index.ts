@@ -1,4 +1,5 @@
 import useCreateSafe from './create-safe';
+import useDeployContract from './deploy-contract';
 import useLocalAccountDetails from './local-account-details';
 import useSafeApiService from './safe-api';
 import useGetSafesForAddress from './safes-for-address';
@@ -10,4 +11,5 @@ export {
 	useCreateSafe,
 	useLocalAccountDetails,
 	useUploadToArweave,
+	useDeployContract,
 };

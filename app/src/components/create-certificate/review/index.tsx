@@ -4,7 +4,7 @@ import { useWallet } from '@thirdweb-dev/react';
 
 import { Button } from 'antd';
 
-import { useUploadToArweave } from '~/hooks';
+import { useDeployContract, useUploadToArweave } from '~/hooks';
 import { useCreateCertificateStore } from '~/stores';
 
 import { TbCircleArrowDown, TbCircleArrowRight } from 'react-icons/tb';
@@ -16,6 +16,7 @@ const ReviewCreateCertificate = () => {
 	const { prevStep, arweaveManifestId } = useCreateCertificateStore();
 	const walletInstance = useWallet();
 	const { uploadFiles } = useUploadToArweave();
+	const { deployContract, isDeploying, error } = useDeployContract();
 	return (
 		<PageLayout title='Review your Certificate' footer=''>
 			<div className='flex flex-col gap-4'>
@@ -49,7 +50,13 @@ const ReviewCreateCertificate = () => {
 						type='primary'
 						className='w-full bg-secondary sm:w-1/3'
 						size='large'
-						disabled={arweaveManifestId === '' || walletInstance?.walletId !== 'safe'}
+						disabled={
+							arweaveManifestId === '' ||
+							walletInstance?.walletId !== 'safe' ||
+							isDeploying
+						}
+						// eslint-disable-next-line @typescript-eslint/no-misused-promises
+						onClick={() => deployContract().catch((err) => console.error(err))}
 					>
 						Propose Certificate Contract
 					</Button>

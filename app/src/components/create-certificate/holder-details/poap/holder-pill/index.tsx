@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { POAPHolder } from '~/stores/create-certificate';
+import type { Holder } from '~/stores/create-certificate';
 
 interface Props {
-	data: POAPHolder;
+	data: Holder;
 }
 
 const POAPHolderPill = ({ data }: Props) => {

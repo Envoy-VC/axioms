@@ -2,16 +2,16 @@ import React from 'react';
 
 import { Button, Input, message } from 'antd';
 
-import type { POAPHolder } from '~/stores/create-certificate';
+import type { Holder } from '~/stores/create-certificate';
 
 import { TbTrash } from 'react-icons/tb';
 
 interface Props {
-	setHolders: React.Dispatch<React.SetStateAction<POAPHolder[]>>;
+	setHolders: React.Dispatch<React.SetStateAction<Holder[]>>;
 }
 
 const AddPOAPHolder = ({ setHolders }: Props) => {
-	const [entries, setEntries] = React.useState<POAPHolder>({});
+	const [entries, setEntries] = React.useState<Holder>({});
 
 	const [key, setKey] = React.useState<string>('');
 	const [value, setValue] = React.useState<string>('');
