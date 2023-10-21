@@ -23,7 +23,6 @@ const useDeployContract = () => {
 		const leaves = addressArray.map((x) => keccak256(x));
 		const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 		const root = '0x' + tree.getRoot().toString('hex');
-		console.log(root);
 		return root;
 	};
 
@@ -31,7 +30,6 @@ const useDeployContract = () => {
 		try {
 			setIsDeploying(true);
 			const merkleRoot = getMerkleRoot();
-			return;
 			const res = await sdk?.deployer.deployPublishedContract(
 				'0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1',
 				'Axiom',

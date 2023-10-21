@@ -34,6 +34,7 @@ export interface Actions {
 	setBasicDetails: (basicDetails: BasicDetailsState) => void;
 	setCertificateHolders: (holders: CertificateState) => void;
 	setArweaveManifestId: (arweaveTxId: string) => void;
+	resetForm: () => void;
 }
 
 export interface VerificationState {
@@ -55,8 +56,7 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	eventType: 'online',
 	certificate: undefined,
 	holders: [],
-	arweaveManifestId: '',
-	contractAddress: '',
+	arweaveManifestId: 'DIKO1fJ5yLSSH0DdzLO3VBiZhMZ2KiOZuo88nYeJ11A',
 	verificationConfig: { auth: [], claims: [] },
 	nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),
 	prevStep: () => set((state) => ({ currentStep: state.currentStep - 1 })),
@@ -64,4 +64,16 @@ export const useCreateCertificateStore = create<State & Actions>((set) => ({
 	setCertificateHolders: (holders) => set(holders),
 	setVerificationConfig: (verificationConfig) => set({ verificationConfig }),
 	setArweaveManifestId: (arweaveManifestId) => set({ arweaveManifestId }),
+	resetForm: () =>
+		set({
+			currentStep: 1,
+			type: 'poap',
+			eventName: '',
+			eventDescription: '',
+			eventType: 'online',
+			certificate: undefined,
+			holders: [],
+			arweaveManifestId: '',
+			verificationConfig: { auth: [], claims: [] },
+		}),
 }));

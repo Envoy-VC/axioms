@@ -1,9 +1,12 @@
 import React from 'react';
 
+import { useRouter } from 'next/router';
+
 import { useWallet } from '@thirdweb-dev/react';
 
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
+import { Spinner } from '~/components/common';
 import { useDeployContract, useUploadToArweave } from '~/hooks';
 import { useCreateCertificateStore } from '~/stores';
 
@@ -13,10 +16,25 @@ import PageLayout from '../layout';
 import PreviewCertificateDetails from '../preview-details';
 
 const ReviewCreateCertificate = () => {
-	const { prevStep, arweaveManifestId } = useCreateCertificateStore();
+	const router = useRouter();
+	const { prevStep, arweaveManifestId, resetForm } = useCreateCertificateStore();
 	const walletInstance = useWallet();
-	const { uploadFiles } = useUploadToArweave();
+	const { uploadFiles, isUploading } = useUploadToArweave();
 	const { deployContract, isDeploying, error } = useDeployContract();
+
+	React.useEffect(() => {
+		if (error) {
+			void message.error('User Rejected Transaction');
+		}
+	}, [error]);
+
+	const onClickDashboard = () => {
+		router
+			.push('/organization/dashboard')
+			.then(() => resetForm())
+			.catch((error) => console.error(error));
+	};
+
 	return (
 		<PageLayout title='Review your Certificate' footer=''>
 			<div className='flex flex-col gap-4'>
@@ -38,11 +56,17 @@ const ReviewCreateCertificate = () => {
 						type='primary'
 						className='w-full bg-secondary sm:w-1/3'
 						size='large'
-						disabled={arweaveManifestId !== ''}
+						disabled={arweaveManifestId !== '' || isUploading}
 						// eslint-disable-next-line @typescript-eslint/no-misused-promises
 						onClick={() => uploadFiles().catch((err) => console.error(err))}
 					>
-						Upload Certificates to Arweave
+						{isUploading ? (
+							<Spinner />
+						) : arweaveManifestId === '' ? (
+							'Upload Certificates to Arweave'
+						) : (
+							'Uploaded ✅'
+						)}
 					</Button>
 					<TbCircleArrowRight className='hidden text-3xl text-gray-400 sm:flex' />
 					<TbCircleArrowDown className='flex text-3xl text-gray-400 sm:hidden' />
@@ -59,6 +83,22 @@ const ReviewCreateCertificate = () => {
 						onClick={() => deployContract().catch((err) => console.error(err))}
 					>
 						Propose Certificate Contract
+					</Button>
+					<TbCircleArrowRight className='hidden text-3xl text-gray-400 sm:flex' />
+					<TbCircleArrowDown className='flex text-3xl text-gray-400 sm:hidden' />
+
+					<Button
+						type='primary'
+						className='w-full bg-secondary sm:w-1/3'
+						size='large'
+						disabled={
+							arweaveManifestId === '' ||
+							walletInstance?.walletId !== 'safe' ||
+							!isDeploying
+						}
+						onClick={onClickDashboard}
+					>
+						Go to Safe Dashboard
 					</Button>
 				</div>
 			</div>
