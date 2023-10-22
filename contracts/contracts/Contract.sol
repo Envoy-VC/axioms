@@ -12,7 +12,7 @@ contract Axiom is ERC721, ERC721URIStorage, Ownable {
     bytes32 public merkleRoot;
     uint256 private _nextTokenId;
     string public certificateId;
-    string public baseURL = "https://axioms-alpha-vercel.app/api/";
+    string public baseURL = "https://axioms-alpha.vercel.app/api/";
 
     // mapping to store wether the address has claimed or not
     mapping(address => bool) public claimed;
