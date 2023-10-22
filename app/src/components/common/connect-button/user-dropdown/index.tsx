@@ -39,7 +39,13 @@ const ProfileInstance = () => {
 		return [
 			{
 				key: '2',
-				label: <DropDownItem name='Your organization' Icon={TbBuilding} />,
+				label: (
+					<DropDownItem
+						name='Your organization'
+						Icon={TbBuilding}
+						handleClick={() => router.push('/organization/dashboard')}
+					/>
+				),
 			},
 			{
 				key: '3',

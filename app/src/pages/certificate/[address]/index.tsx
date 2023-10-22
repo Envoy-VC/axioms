@@ -1,32 +1,48 @@
-import keccak256 from 'keccak256';
-import MerkleTree from 'merkletreejs';
 import React from 'react';
 import type { ReactElement } from 'react';
 
-import { Button } from 'antd';
+import { useRouter } from 'next/router';
+
+import { useAddress } from '@thirdweb-dev/react';
 
 import { Layout } from '~/components';
+import { CertificateDetails, EventDetails } from '~/components/certificate';
+import { Spinner } from '~/components/common';
+import { useEventDetails } from '~/hooks';
 
 import type { NextPageWithLayout } from '../../_app';
 
 const CertificatePage: NextPageWithLayout = () => {
-	const onFetch = async () => {
-		const res = await fetch(
-			'/api/DIKO1fJ5yLSSH0DdzLO3VBiZhMZ2KiOZuo88nYeJ11A/0xbf4979305b43b0eb5bb6a5c67ffb89408803d3e1'
+	const connectedAddress = useAddress();
+	const router = useRouter();
+	const { address } = router.query;
+	const { data, isLoading, error, manifestId } = useEventDetails({
+		contractAddress: address as string,
+	});
+	if (isLoading) {
+		return (
+			<div className='flex w-full items-center justify-center'>
+				<Spinner size='large' />
+			</div>
 		);
-		const data = (await res.json()) as object;
-		console.log(data);
-	};
-	return (
-		<div>
-			<Button
-				// eslint-disable-next-line @typescript-eslint/no-misused-promises
-				onClick={onFetch}
-			>
-				Fetch
-			</Button>
-		</div>
-	);
+	} else if (!isLoading && error) {
+		return <div>{error}</div>;
+	} else if (!isLoading && !error && data) {
+		return (
+			<div className='flex flex-col gap-2'>
+				<EventDetails data={data} />
+				{connectedAddress ? (
+					<CertificateDetails address={connectedAddress} manifestId={manifestId} />
+				) : (
+					<div className='flex w-full flex-col items-center justify-center gap-4 p-4'>
+						<div className='text-lg text-slate-700'>
+							Connect Wallet to verify Eligibility
+						</div>
+					</div>
+				)}
+			</div>
+		);
+	}
 };
 
 CertificatePage.getLayout = function getLayout(page: ReactElement) {

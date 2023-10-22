@@ -1,12 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getMetadata } from '~/helpers/arweave';
-
-interface ManifestResponse {
-	manifest: string;
-	version: string;
-	paths: Record<string, { id: string }>;
-}
+import { getCertificateImage, getMetadata } from '~/helpers/arweave';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -24,16 +18,8 @@ export default async function handler(
 	if (!metadata) throw new Error('Metadata not found');
 
 	const { eventName, eventDescription, eventType, holders, type } = metadata;
-
-	const imageFile = await fetch(`https://gateway.irys.xyz/${manifestId}`)
-		.then((res) => res.json())
-
-		.then((res: ManifestResponse) =>
-			Object.keys(res.paths)
-				.filter((path) => !path.endsWith('.json'))
-				.at(0)
-		)
-		.catch((err) => console.log(err));
+	const imageFile = await getCertificateImage(manifestId);
+	if (!imageFile) throw new Error('Image not found');
 
 	// filter out all holders with undefined address
 	const holdersWithAddress = holders.filter(
