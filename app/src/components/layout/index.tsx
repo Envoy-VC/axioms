@@ -21,17 +21,17 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
 	return (
-		<AntDesignConfigProvider>
-			<Web3Provider>
-				<NotificationProvider>
+		<Web3Provider>
+			<NotificationProvider>
+				<SEO />
+				<AntDesignConfigProvider>
 					<div className={clsx(satoshi.className, 'min-h-full')}>
-						<SEO />
 						<Navbar />
 						{children}
 					</div>
-				</NotificationProvider>
-			</Web3Provider>
-		</AntDesignConfigProvider>
+				</AntDesignConfigProvider>
+			</NotificationProvider>
+		</Web3Provider>
 	);
 };
 
