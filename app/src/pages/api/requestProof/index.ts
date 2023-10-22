@@ -8,8 +8,6 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	console.log('here');
-	console.log(req.body);
 	const { manifestId, address } = JSON.parse(req.body as string) as {
 		manifestId: string;
 		address: string;

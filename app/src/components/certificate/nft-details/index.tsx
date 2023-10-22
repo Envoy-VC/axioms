@@ -31,7 +31,7 @@ const CertificateNFTDetails = ({ data }: Props) => {
 			: `https://opensea.io/assets/polygon/${address as string}`;
 	const { name, description, image, attributes } = data;
 	return (
-		<div className='flex flex-col lg:flex-row'>
+		<div className='flex flex-col lg:flex-row pb-16'>
 			<div className='w-full basis-2/5'>
 				<div className='flex flex-col px-4'>
 					<div className='flex flex-row justify-between gap-2 rounded-t-2xl border-2 border-b-[0px] p-1 py-2'>

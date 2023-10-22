@@ -1,7 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useAddress, useContract, useContractRead } from '@thirdweb-dev/react';
+import {
+	useAddress,
+	useContract,
+	useContractRead,
+	useContractWrite,
+} from '@thirdweb-dev/react';
 
 import { Button } from 'antd';
 
@@ -21,8 +26,20 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 	const { data: metadata } = useEventDetails({
 		contractAddress: contractAddress,
 	});
+
+	const address = useAddress();
+	const { contract } = useContract(contractAddress, ABI);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const { data, isLoading, error } = useContractRead(contract, 'claimed', [
+		address,
+	]);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const { data: manifestId } = useContractRead(contract, 'certificateId');
+	const { mutateAsync: safeMint } = useContractWrite(contract, 'safeMint');
+
 	const [proofsVerified, setProofsVerified] = React.useState<boolean>(false);
 	const [isVerifying, setIsVerifying] = React.useState<boolean>(false);
+	const [isClaiming, setIsClaiming] = React.useState<boolean>(false);
 
 	const verifyResponse = async () => {
 		if (!metadata) return;
@@ -45,14 +62,27 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 		}
 	};
 
-	const address = useAddress();
-	const { contract } = useContract(contractAddress, ABI);
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const { data, isLoading, error } = useContractRead(contract, 'claimed', [
-		address,
-	]);
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const { data: manifestId } = useContractRead(contract, 'certificateId');
+	const claimCertificate = async () => {
+		try {
+			setIsClaiming(true);
+			const id = manifestId as string;
+			const res = await fetch('/api/requestProof', {
+				method: 'POST',
+				body: JSON.stringify({ manifestId: id, address: address }),
+			});
+
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const json = (await res.json()) as { proof: any };
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			const proof = json.proof;
+			const data = await safeMint({ args: [address, proof] });
+			console.info('contract call successs', data);
+		} catch (err) {
+			console.error('contract call failure', err);
+		} finally {
+			setIsClaiming(false);
+		}
+	};
 
 	if (isLoading) {
 		return (
@@ -66,13 +96,13 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 				Something went wrong.
 			</div>
 		);
-	} else if (!isLoading && !error && data === false) {
+	} else if (!isLoading && !error && data === true) {
 		return (
 			<div className='py-4 text-center text-xl font-medium text-slate-700'>
 				Already Claimed Certificate
 			</div>
 		);
-	} else if (!isLoading && !error && data === true) {
+	} else if (!isLoading && !error && data === false) {
 		return (
 			<div className='py-4'>
 				{!response && <SismoConnectButton />}
@@ -85,11 +115,23 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 							// eslint-disable-next-line @typescript-eslint/no-misused-promises
 							onClick={verifyResponse}
 						>
-							Verify Proofs
+							{isVerifying ? <Spinner color='white' /> : 'Verify Response'}
 						</Button>
 					</div>
 				)}
-				{}
+				{response && proofsVerified && (
+					<div className='flex justify-center py-4'>
+						<Button
+							size='large'
+							type='primary'
+							className={clsx('flex items-center justify-center bg-secondary')}
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onClick={claimCertificate}
+						>
+							{isClaiming ? <Spinner color='white' /> : 'Claim Certificate'}
+						</Button>
+					</div>
+				)}
 			</div>
 		);
 	}
