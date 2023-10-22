@@ -87,8 +87,9 @@ const ReviewCreateCertificate = () => {
 					</Button>
 					<TbCircleArrowRight className='hidden text-3xl text-gray-400 sm:flex' />
 					<TbCircleArrowDown className='flex text-3xl text-gray-400 sm:hidden' />
-					<Link href='https://app.safe.global/welcome' target='_blank'>
+					<Link href='https://app.safe.global/welcome' target='_blank' className='w-full sm:w-1/3'>
 						<Button
+							block
 							type='primary'
 							className='w-full bg-secondary sm:w-1/3'
 							size='large'

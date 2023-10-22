@@ -12,10 +12,12 @@ const Navbar = () => {
 	return (
 		<div className='flex h-[8vh] items-center border-b-[1px] border-gray-300 px-8'>
 			<div className='mx-auto flex w-full max-w-screen-3xl flex-row items-center justify-between'>
-				<div className='flex items-center gap-2'>
-					<PiFingerprintDuotone className='text-primary' size={38} />
-					<span className='text-2xl font-medium uppercase'>axioms</span>
-				</div>
+				<Link href='/' className='text-slate-500 hover:underline'>
+					<div className='flex items-center gap-2'>
+						<PiFingerprintDuotone className='text-primary' size={38} />
+						<span className='text-2xl font-medium uppercase'>axioms</span>
+					</div>
+				</Link>
 				<div className='hidden items-center gap-6 md:flex'>
 					<Link href='/' className='text-slate-500 hover:underline'>
 						Explore

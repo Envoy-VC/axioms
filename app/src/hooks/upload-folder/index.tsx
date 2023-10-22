@@ -5,7 +5,6 @@ import React from 'react';
 
 import { env } from '~/env.mjs';
 import { useCreateCertificateStore } from '~/stores';
-import type { Holder } from '~/stores/create-certificate';
 
 export interface Tag {
 	name: string;
