@@ -3,23 +3,23 @@ import { NextSeo } from 'next-seo';
 const SEO = () => {
 	return (
 		<NextSeo
-			title='Web3 Hackathon Starter'
-			description='A opinionated starter template for building web3 applications with Next.js, Tailwind CSS, and thirdweb'
+			title='Axioms'
+			description='Axioms provides a one stop solution for organizations to issue and verify certificates.'
 			openGraph={{
-				url: 'https://w3-starter.vercel.app',
-				title: 'Web3 Hackathon Starter',
+				url: 'https://axioms-alpha.vercel.app',
+				title: 'Axioms',
 				description:
-					'A opinionated starter template for building web3 applications with Next.js, Tailwind CSS, and thirdweb',
+					'Axioms provides a one stop solution for organizations to issue and verify certificates.',
 				images: [
 					{
-						url: 'https://i.ibb.co/YhWLyTb/OG.png',
+						url: 'https://i.ibb.co/PrKLdJX/OG.png',
 						width: 1200,
 						height: 630,
-						alt: 'W3S OG Image',
+						alt: 'Axioms OG Image',
 						type: 'image/png',
 					},
 				],
-				siteName: 'Web3 Hackathon Starter',
+				siteName: 'Axioms',
 			}}
 			twitter={{
 				handle: '@Envoy_1084',
