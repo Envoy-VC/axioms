@@ -8,7 +8,7 @@ import {
 	useContractWrite,
 } from '@thirdweb-dev/react';
 
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
 import { Spinner } from '~/components/common';
 import { useEventDetails } from '~/hooks';
@@ -70,14 +70,15 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 				method: 'POST',
 				body: JSON.stringify({ manifestId: id, address: address }),
 			});
-
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const json = (await res.json()) as { proof: any };
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			const proof = json.proof;
 			const data = await safeMint({ args: [address, proof] });
-			console.info('contract call successs', data);
+			await message.success('Certificate Claimed Successfully');
+			console.info('contract call success', data);
 		} catch (err) {
+			await message.error('Certificate Claim Failed');
 			console.error('contract call failure', err);
 		} finally {
 			setIsClaiming(false);
@@ -114,6 +115,7 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 							className={clsx('flex items-center justify-center bg-secondary')}
 							// eslint-disable-next-line @typescript-eslint/no-misused-promises
 							onClick={verifyResponse}
+							disabled={isVerifying}
 						>
 							{isVerifying ? <Spinner color='white' /> : 'Verify Response'}
 						</Button>
@@ -127,6 +129,7 @@ const ClaimCertification = ({ contractAddress }: Props) => {
 							className={clsx('flex items-center justify-center bg-secondary')}
 							// eslint-disable-next-line @typescript-eslint/no-misused-promises
 							onClick={claimCertificate}
+							disabled={isClaiming}
 						>
 							{isClaiming ? <Spinner color='white' /> : 'Claim Certificate'}
 						</Button>

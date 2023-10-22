@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { useWallet } from '@thirdweb-dev/react';
@@ -30,7 +31,7 @@ const ReviewCreateCertificate = () => {
 
 	const onClickDashboard = () => {
 		router
-			.push('/organization/dashboard')
+			.push('/')
 			.then(() => resetForm())
 			.catch((error) => console.error(error));
 	};
@@ -86,20 +87,21 @@ const ReviewCreateCertificate = () => {
 					</Button>
 					<TbCircleArrowRight className='hidden text-3xl text-gray-400 sm:flex' />
 					<TbCircleArrowDown className='flex text-3xl text-gray-400 sm:hidden' />
-
-					<Button
-						type='primary'
-						className='w-full bg-secondary sm:w-1/3'
-						size='large'
-						disabled={
-							arweaveManifestId === '' ||
-							walletInstance?.walletId !== 'safe' ||
-							!isDeploying
-						}
-						onClick={onClickDashboard}
-					>
-						Go to Safe Dashboard
-					</Button>
+					<Link href='https://app.safe.global/welcome' target='_blank'>
+						<Button
+							type='primary'
+							className='w-full bg-secondary sm:w-1/3'
+							size='large'
+							disabled={
+								arweaveManifestId === '' ||
+								walletInstance?.walletId !== 'safe' ||
+								!isDeploying
+							}
+							onClick={onClickDashboard}
+						>
+							Go to Safe Dashboard
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</PageLayout>
